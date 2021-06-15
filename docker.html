@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+		<!-- Enable responsiveness on mobile devices-->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+		<title>blog</title>
+		<link rel="shortcut icon" href="/pelican/theme/favicon/favicon.ico" />
+		<link rel="stylesheet" href="/pelican/theme/css/poole.css" />
+		<link rel="stylesheet" href="/pelican/theme/css/hyde.css" />
+		<link rel="stylesheet" href="/pelican/theme/css/syntax.css" />
+		<link rel="stylesheet" href="/pelican/theme/css/style.css" />
+		<script type="text/javascript" src="/pelican/theme/css/all.js" />
+
+		</script>
+	</head>
+
+	<body class="theme-base-0g">
+	<div class="test-nav">
+		<a href="/pelican">Home</a>
+				<a href="/categories.html">Category</a>
+				<a href="/tags.html">Tag</a>
+	</div>
+		<div class="content container">
+<div class="post">
+  <h2 class="post-title">docker</h2>
+	<span class="post-date">Wed 04 November 2020</span>
+	<h3>official Docker images site:</h3>
+<table>
+<thead>
+<tr>
+<th>distro</th>
+<th>url</th>
+<th>command</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://hub.docker.com/r/kalilinux/kali-linux-docker/" target="blank">kali</a></td>
+<td>https://hub.docker.com/r/kalilinux/kali-rolling</td>
+<td>docker pull kalilinux/kali-rolling</td>
+</tr>
+<tr>
+<td><a href="https://hub.docker.com/_/archlinux" target="blank">ArchLinux</a></td>
+<td>https://hub.docker.com/_/archlinux</td>
+<td>docker pull archlinux</td>
+</tr>
+<tr>
+<td><a href="https://hub.docker.com/_/debian/" target="blank">Debian</a></td>
+<td>https://hub.docker.com/_/debian/</td>
+<td>docker pull debian</td>
+</tr>
+<tr>
+<td><a href="https://hub.docker.com/_/ubuntu/" target="blank">Ubuntu</a></td>
+<td>https://hub.docker.com/_/ubuntu/</td>
+<td>docker pull ubuntu</td>
+</tr>
+<tr>
+<td><a href="https://hub.docker.com/_/fedora" target="blank">Fedora</a></td>
+<td>https://hub.docker.com/_/fedora/</td>
+<td>docker pull fedora</td>
+</tr>
+<tr>
+<td><a href="https://hub.docker.com/_/centos" target="blank">Centos</a></td>
+<td>https://hub.docker.com/_/centos/</td>
+<td>docker pull centos</td>
+</tr>
+<tr>
+<td><a href="https://hub.docker.com/_/alpine" target="blank">Alpine</a></td>
+<td>https://hub.docker.com/_/alpine/</td>
+<td>docker pull alpine</td>
+</tr>
+</tbody>
+</table>
+<p>let's give it a try at fedora 32 workstation</p>
+<div class="highlight"><pre><span></span><code>[root@localhost ~]# cat /etc/fedora-release
+Fedora release 32 (Thirty Two)
+
+[root@localhost ~]# dnf provides docker
+Last metadata expiration check: 1:42:06 ago on Wed 04 Nov 2020 03:03:54 AM JST.
+moby-engine-19.03.8-1.ce.gitafacb8b.fc32.x86_64 : The open-source application container engine
+Repo        : fedora
+Matched from:
+Provide    : docker = 19.03.8-1.ce.gitafacb8b.fc32
+
+moby-engine-19.03.11-1.ce.git42e35e6.fc32.x86_64 : The open-source application container engine
+Repo        : @System
+Matched from:
+Provide    : docker = 19.03.11-1.ce.git42e35e6.fc32
+
+moby-engine-19.03.11-1.ce.git42e35e6.fc32.x86_64 : The open-source application container engine
+Repo        : updates
+Matched from:
+Provide    : docker = 19.03.11-1.ce.git42e35e6.fc32
+
+[root@localhost ~]# dnf install docker
+Last metadata expiration check: 1:45:07 ago on Wed 04 Nov 2020 03:03:54 AM JST.
+Dependencies resolved.
+====================================================================================================================================== 
+Package                      Architecture            Version                                                    Repository                Size
+======================================================================================================================================
+Installing:
+ moby-engine               x86_64                  19.03.11-1.ce.git42e35e6.fc32         updates                    51 M
+Installing dependencies:
+ containerd                   x86_64                  1.3.3-1.fc32                                              updates                    32 M
+
+Transaction Summary
+======================================================================================================================================
+Install  2 Packages
+
+Total download size: 83 M
+Installed size: 303 M
+Is this ok [y/N]: y
+
+[root@localhost ~]# docker -v
+Docker version 19.03.11, build 42e35e6
+</code></pre></div>
+
+<hr>
+<p>start docker service</p>
+<div class="highlight"><pre><span></span><code>[root@localhost ~]# systemctl enable --now docker
+</code></pre></div>
+
+<hr>
+<p>let's look at <code>docker image --help</code></p>
+<div class="highlight"><pre><span></span><code>[root@localhost ~]# docker images --help
+
+Usage:  docker images [OPTIONS] [REPOSITORY[:TAG]]
+
+List images
+
+Options:
+  -a, --all             Show all images (default hides intermediate images)
+      --digests         Show digests
+  -f, --filter filter   Filter output based on conditions provided
+      --format string   Pretty-print images using a Go template
+      --no-trunc        Don&#39;t truncate output
+  -q, --quiet           Only show numeric IDs
+</code></pre></div>
+
+<hr>
+<p>download docker images</p>
+<div class="highlight"><pre><span></span><code>[root@localhost ~]# docker images -a
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+
+[root@localhost ~]# docker pull fedora
+Using default tag: latest
+latest: Pulling from library/fedora
+ee7e89337106: Pull complete
+Digest: sha256:b9ec86d36fca7b1d3de39cd7c258e8d90c377d312c21a7748071ce49069b8db4
+Status: Downloaded newer image for fedora:latest
+docker.io/library/fedora:latest
+
+[root@localhost ~]# docker pull fedora:32
+32: Pulling from library/fedora
+dc5a769d3823: Pull complete
+Digest: sha256:e59aca6fc3cbb83ef1a7c903c4c83b26be24c255b8e119cabc9a17726ad93859
+Status: Downloaded newer image for fedora:32
+docker.io/library/fedora:32
+
+[root@localhost ~]# docker images -a
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+fedora              latest              eb17aa5c154f        9 days ago          175MB
+fedora              32                  9de507563f7a        9 days ago          201MB
+
+[root@localhost ~]# docker images -q
+eb17aa5c154f
+9de507563f7a
+</code></pre></div>
+
+<p>the following steps can not be done</p>
+<div class="highlight"><pre><span></span><code>[root@localhost ~]# docker pull fedora fedora:32                                                                              &quot;docker pull&quot; requires exactly 1 argument.                                                                                    See &#39;docker pull --help&#39;.                                                                                                                                                                                                                                   Usage:  docker pull [OPTIONS] NAME[:TAG|@DIGEST]                                                                                                                                                                                                            Pull an image or a repository from a registry                                                                                 [root@localhost ~]# docker pull fedora                                                                                        Using default tag: latest                                                                                                     ^C                                                                                                                            [root@localhost ~]# docker pull fedora,fedora:32                                                                              invalid reference format
+</code></pre></div>
+
+<hr>
+<p>let's try with this image <code>fedora</code>, but what happened?</p>
+<div class="highlight"><pre><span></span><code>[root@localhost ~]# docker run -it --name nickname -h hostname fedora bash
+docker: Error response from daemon: OCI runtime create failed: this version of runc doesn&#39;t work on cgroups v2: unknown.
+ERRO[0000] error waiting for container: context canceled
+
+[root@localhost ~]# docker version
+Client:
+ Version:           19.03.11
+ API version:       1.40
+ Go version:        go1.14.3
+ Git commit:        42e35e6
+ Built:             Sun Jun  7 21:16:58 2020
+ OS/Arch:           linux/amd64
+ Experimental:      false
+
+Server:
+ Engine:
+  Version:          19.03.11
+  API version:      1.40 (minimum version 1.12)
+  Go version:       go1.14.3
+  Git commit:       42e35e6
+  Built:            Sun Jun  7 00:00:00 2020
+  OS/Arch:          linux/amd64
+  Experimental:     false
+ containerd:
+  Version:          1.3.3
+  GitCommit:
+ runc:
+  Version:          1.0.0-rc10+dev
+  GitCommit:        fbdbaf85ecbc0e077f336c03062710435607dbf1
+ docker-init:
+  Version:          0.18.0
+  GitCommit:
+
+[root@localhost ~]# vim /etc/default/grub
+...
+cgroup.memory=nokmem
+~
+:x
+
+[root@localhost ~]# docker run -it --name docker-nickname -h docker-hostname fedora bash
+docker: Error response from daemon: Conflict. The container name &quot;/docker-nickname&quot; is already in use by container &quot;795ee7db6cc2fad9003aa5b8f95bdce96fdf27f9247bd819caa39f09a777d68d&quot;. You have to remove (or rename) that container to be able to reuse that name.See &#39;docker run --help&#39;.
+
+[root@localhost ~]# docker ps -a
+CONTAINER ID        IMAGE               COMMAND             CREATED              STATUS              PORTS               NAMES
+795ee7db6cc2        fedora              &quot;/bin/bash&quot;             7 minutes ago        Created                                 docker-nickname
+426bdf9f3e14        fedora              &quot;/bin/bash&quot;              10 minutes ago      Created                                 nickname
+</code></pre></div>
+
+<hr>
+<p>let's look at <code>docker inspect image:TAG</code></p>
+<div class="highlight"><pre><span></span><code>[root@localhost ~]# docker inspect fedora:latest
+[
+    {
+        &quot;Id&quot;: &quot;sha256:eb17aa5c154fde74a37e24bf81e30636e0ac9a666408d6d98888c4bd7ea9e593&quot;,
+        &quot;RepoTags&quot;: [
+            &quot;fedora:latest&quot;
+        ],
+        &quot;RepoDigests&quot;: [
+            &quot;fedora@sha256:b9ec86d36fca7b1d3de39cd7c258e8d90c377d312c21a7748071ce49069b8db4&quot;
+        ],
+        &quot;Parent&quot;: &quot;&quot;,
+        &quot;Comment&quot;: &quot;&quot;,
+        &quot;Created&quot;: &quot;2020-10-26T17:22:39.075077493Z&quot;,
+        &quot;Container&quot;: &quot;519b0dff3f6f509d7035e8205f444cfa1f8d63446be69c7e15f6933b326b3fe9&quot;,
+        &quot;ContainerConfig&quot;: {
+            &quot;Hostname&quot;: &quot;519b0dff3f6f&quot;,
+            &quot;Domainname&quot;: &quot;&quot;,
+            &quot;User&quot;: &quot;&quot;,
+            &quot;AttachStdin&quot;: false,
+            &quot;AttachStdout&quot;: false,
+            &quot;AttachStderr&quot;: false,
+            &quot;Tty&quot;: false,
+            &quot;OpenStdin&quot;: false,
+            &quot;StdinOnce&quot;: false,
+            &quot;Env&quot;: [
+                &quot;PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin&quot;,                                                                  &quot;DISTTAG=f33container&quot;,
+                &quot;FGC=f33&quot;,
+                &quot;FBR=f33&quot;
+            ],
+            &quot;Cmd&quot;: [
+                &quot;/bin/sh&quot;,
+                &quot;-c&quot;,
+                &quot;#(nop) &quot;,
+                &quot;CMD [\&quot;/bin/bash\&quot;]&quot;
+            ],
+            &quot;ArgsEscaped&quot;: true,
+            &quot;Image&quot;: &quot;sha256:d37ca7cafcdba15fc6550eab6f8d96b75164cc74b454d8660ccb99e1c4116f56&quot;,
+            &quot;Volumes&quot;: null,
+            &quot;WorkingDir&quot;: &quot;&quot;,
+            &quot;Entrypoint&quot;: null,
+            &quot;OnBuild&quot;: null,
+            &quot;Labels&quot;: {
+                &quot;maintainer&quot;: &quot;Clement Verna &lt;cverna@fedoraproject.org&gt;&quot;
+            }
+        },
+        &quot;DockerVersion&quot;: &quot;18.09.7&quot;,
+        &quot;Author&quot;: &quot;&quot;,
+        &quot;Config&quot;: {
+            &quot;Hostname&quot;: &quot;&quot;,
+            &quot;Domainname&quot;: &quot;&quot;,
+            &quot;User&quot;: &quot;&quot;,
+            &quot;AttachStdin&quot;: false,
+            &quot;AttachStdout&quot;: false,
+            &quot;AttachStderr&quot;: false,
+            &quot;Tty&quot;: false,
+            &quot;OpenStdin&quot;: false,
+            &quot;StdinOnce&quot;: false,
+            &quot;Env&quot;: [
+                &quot;PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin&quot;,
+                &quot;DISTTAG=f33container&quot;,
+                &quot;FGC=f33&quot;,
+                &quot;FBR=f33&quot;
+            ],
+            &quot;Cmd&quot;: [
+                &quot;/bin/bash&quot;
+            ],
+            &quot;ArgsEscaped&quot;: true,
+            &quot;Image&quot;: &quot;sha256:d37ca7cafcdba15fc6550eab6f8d96b75164cc74b454d8660ccb99e1c4116f56&quot;,
+            &quot;Volumes&quot;: null,
+            &quot;WorkingDir&quot;: &quot;&quot;,
+            &quot;Entrypoint&quot;: null,
+            &quot;OnBuild&quot;: null,
+            &quot;Labels&quot;: {
+                &quot;maintainer&quot;: &quot;Clement Verna &lt;cverna@fedoraproject.org&gt;&quot;
+            }
+        },
+        &quot;Architecture&quot;: &quot;amd64&quot;,
+        &quot;Os&quot;: &quot;linux&quot;,
+        &quot;Size&quot;: 175000587,
+        &quot;VirtualSize&quot;: 175000587,
+        &quot;GraphDriver&quot;: {
+            &quot;Data&quot;: {
+                &quot;MergedDir&quot;: &quot;/var/lib/docker/overlay2/223c10456b5c9166e1a32587daa909c980e90598df5451c1f96221a626f0253e/merged&quot;,
+                &quot;UpperDir&quot;: &quot;/var/lib/docker/overlay2/223c10456b5c9166e1a32587daa909c980e90598df5451c1f96221a626f0253e/diff&quot;,
+                &quot;WorkDir&quot;: &quot;/var/lib/docker/overlay2/223c10456b5c9166e1a32587daa909c980e90598df5451c1f96221a626f0253e/work&quot;
+            },
+            &quot;Name&quot;: &quot;overlay2&quot;
+        },
+        &quot;RootFS&quot;: {
+            &quot;Type&quot;: &quot;layers&quot;,
+            &quot;Layers&quot;: [
+                &quot;sha256:f3c6dcc5e8bc11aea965900f315085bfa350fe26859ca4a14d00ef2f61fe32b0&quot;
+            ]
+        },
+        &quot;Metadata&quot;: {
+            &quot;LastTagTime&quot;: &quot;0001-01-01T00:00:00Z&quot;
+        }
+    }
+]
+
+[root@localhost ~]# docker inspect eb17aa5c154f
+[
+    {
+        &quot;Id&quot;: &quot;sha256:eb17aa5c154fde74a37e24bf81e30636e0ac9a666408d6d98888c4bd7ea9e593&quot;,
+        &quot;RepoTags&quot;: [
+            &quot;fedora:latest&quot;
+        ],
+        &quot;RepoDigests&quot;: [
+            &quot;fedora@sha256:b9ec86d36fca7b1d3de39cd7c258e8d90c377d312c21a7748071ce49069b8db4&quot;
+        ],
+        &quot;Parent&quot;: &quot;&quot;,
+        &quot;Comment&quot;: &quot;&quot;,
+        &quot;Created&quot;: &quot;2020-10-26T17:22:39.075077493Z&quot;,
+        &quot;Container&quot;: &quot;519b0dff3f6f509d7035e8205f444cfa1f8d63446be69c7e15f6933b326b3fe9&quot;,
+        &quot;ContainerConfig&quot;: {
+            &quot;Hostname&quot;: &quot;519b0dff3f6f&quot;,
+            &quot;Domainname&quot;: &quot;&quot;,
+            &quot;User&quot;: &quot;&quot;,
+            &quot;AttachStdin&quot;: false,
+            &quot;AttachStdout&quot;: false,
+            &quot;AttachStderr&quot;: false,
+            &quot;Tty&quot;: false,
+            &quot;OpenStdin&quot;: false,
+            &quot;StdinOnce&quot;: false,
+            &quot;Env&quot;: [
+                &quot;PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin&quot;,
+                &quot;DISTTAG=f33container&quot;,
+                &quot;FGC=f33&quot;,
+                &quot;FBR=f33&quot;
+            ],
+            &quot;Cmd&quot;: [
+                &quot;/bin/sh&quot;,
+                &quot;-c&quot;,
+                &quot;#(nop) &quot;,
+                &quot;CMD [\&quot;/bin/bash\&quot;]&quot;
+            ],
+            &quot;ArgsEscaped&quot;: true,
+            &quot;Image&quot;: &quot;sha256:d37ca7cafcdba15fc6550eab6f8d96b75164cc74b454d8660ccb99e1c4116f56&quot;,
+            &quot;Volumes&quot;: null,
+            &quot;WorkingDir&quot;: &quot;&quot;,
+            &quot;Entrypoint&quot;: null,
+            &quot;OnBuild&quot;: null,
+            &quot;Labels&quot;: {
+                &quot;maintainer&quot;: &quot;Clement Verna &lt;cverna@fedoraproject.org&gt;&quot;
+            }
+        },
+        &quot;DockerVersion&quot;: &quot;18.09.7&quot;,
+        &quot;Author&quot;: &quot;&quot;,
+        &quot;Config&quot;: {
+            &quot;Hostname&quot;: &quot;&quot;,
+            &quot;Domainname&quot;: &quot;&quot;,
+            &quot;User&quot;: &quot;&quot;,
+            &quot;AttachStdin&quot;: false,
+            &quot;AttachStdout&quot;: false,
+            &quot;AttachStderr&quot;: false,
+            &quot;Tty&quot;: false,
+            &quot;OpenStdin&quot;: false,
+            &quot;StdinOnce&quot;: false,
+            &quot;Env&quot;: [
+                &quot;PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin&quot;,
+                &quot;DISTTAG=f33container&quot;,
+                &quot;FGC=f33&quot;,
+                &quot;FBR=f33&quot;
+            ],
+            &quot;Cmd&quot;: [
+                &quot;/bin/bash&quot;
+            ],
+            &quot;ArgsEscaped&quot;: true,
+            &quot;Image&quot;: &quot;sha256:d37ca7cafcdba15fc6550eab6f8d96b75164cc74b454d8660ccb99e1c4116f56&quot;,
+            &quot;Volumes&quot;: null,
+            &quot;WorkingDir&quot;: &quot;&quot;,
+            &quot;Entrypoint&quot;: null,
+            &quot;OnBuild&quot;: null,
+            &quot;Labels&quot;: {
+                &quot;maintainer&quot;: &quot;Clement Verna &lt;cverna@fedoraproject.org&gt;&quot;
+            }
+        },
+        &quot;Architecture&quot;: &quot;amd64&quot;,
+        &quot;Os&quot;: &quot;linux&quot;,
+        &quot;Size&quot;: 175000587,
+        &quot;VirtualSize&quot;: 175000587,
+        &quot;GraphDriver&quot;: {
+            &quot;Data&quot;: {
+                &quot;MergedDir&quot;: &quot;/var/lib/docker/overlay2/223c10456b5c9166e1a32587daa909c980e90598df5451c1f96221a626f0253e/merged&quot;,
+                &quot;UpperDir&quot;: &quot;/var/lib/docker/overlay2/223c10456b5c9166e1a32587daa909c980e90598df5451c1f96221a626f0253e/diff&quot;,
+                &quot;WorkDir&quot;: &quot;/var/lib/docker/overlay2/223c10456b5c9166e1a32587daa909c980e90598df5451c1f96221a626f0253e/work&quot;
+            },
+            &quot;Name&quot;: &quot;overlay2&quot;
+        },
+        &quot;RootFS&quot;: {
+            &quot;Type&quot;: &quot;layers&quot;,
+            &quot;Layers&quot;: [
+                &quot;sha256:f3c6dcc5e8bc11aea965900f315085bfa350fe26859ca4a14d00ef2f61fe32b0&quot;
+            ]
+        },
+        &quot;Metadata&quot;: {
+            &quot;LastTagTime&quot;: &quot;0001-01-01T00:00:00Z&quot;
+        }
+    }
+]
+</code></pre></div>
+
+<hr>
+<p>before we start, some args we need to know</p>
+<div class="highlight"><pre><span></span><code>[root@localhost ~]# docker run --help | grep -e --interactive
+  -i, --interactive                    Keep STDIN open even if not attached
+
+ [root@localhost ~]# docker run --help | grep -e --tty
+  -t, --tty                            Allocate a pseudo-TTY [pseudo means fake.]
+</code></pre></div>
+
+<hr>
+<p>delete docker imames</p>
+<div class="highlight"><pre><span></span><code>[root@localhost ~]# docker images -a
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+fedora              latest              eb17aa5c154f        9 days ago          175MB
+fedora              32                  9de507563f7a        9 days ago          201MB
+
+[root@localhost ~]# docker ps -a
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+795ee7db6cc2        fedora              &quot;/bin/bash&quot;         21 hours ago        Created                                 docker-nickname
+426bdf9f3e14        fedora              &quot;/bin/bash&quot;         21 hours ago        Created                                 nickname
+
+[root@localhost ~]# docker rmi fedora
+Error response from daemon: conflict: unable to remove repository reference &quot;fedora&quot; (must force) - container 426bdf9f3e14 is using its referenced image eb17aa5c154f
+
+[root@localhost ~]# docker rmi fedora:32
+Untagged: fedora:32
+Untagged: fedora@sha256:e59aca6fc3cbb83ef1a7c903c4c83b26be24c255b8e119cabc9a17726ad93859
+Deleted: sha256:9de507563f7a6604be52a95a6b136efe56e4547c6cb2fa1ba7ed41052e0ad150
+Deleted: sha256:88557d3f8a58a7ca4c8b429593aede5a9b6b963905c32aae55057503893d9e28
+
+[root@localhost ~]# docker rmi -f fedora
+Untagged: fedora:latest
+Untagged: fedora@sha256:b9ec86d36fca7b1d3de39cd7c258e8d90c377d312c21a7748071ce49069b8db4
+Deleted: sha256:eb17aa5c154fde74a37e24bf81e30636e0ac9a666408d6d98888c4bd7ea9e593
+
+[root@localhost ~]# docker images -a
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+
+[root@localhost ~]# docker ps -a
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+795ee7db6cc2        eb17aa5c154f        &quot;/bin/bash&quot;         21 hours ago        Created                                 docker-nickname
+426bdf9f3e14        eb17aa5c154f        &quot;/bin/bash&quot;         21 hours ago        Created                                 nickname
+</code></pre></div>
+
+<hr>
+<p>delete container</p>
+<div class="highlight"><pre><span></span><code>[root@localhost ~]# docker rm container id/name 
+</code></pre></div>
+
+<p>Force-remove a running container with <code>--force</code></p>
+<p>Remove all stopped containers</p>
+<div class="highlight"><pre><span></span><code>[root@localhost ~]# docker rm $(docker ps -a -q)
+</code></pre></div>
+
+<p>Remove a container and selectively remove volumes</p>
+<div class="highlight"><pre><span></span><code>$ docker create -v awesome:/foo -v /bar --name hello redis
+hello
+
+$ docker rm -v hello
+</code></pre></div>
+
+<hr>
+<h3>what is container about docker?</h3>
+<p>to be honest, <code>docker container</code> is the <code>instance of docker images</code>.</p>
+<hr>
+</div>
+		</div>
+	</body>
+</html>

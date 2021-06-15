@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+		<!-- Enable responsiveness on mobile devices-->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+		<title>blog</title>
+		<link rel="shortcut icon" href="/pelican/theme/favicon/favicon.ico" />
+		<link rel="stylesheet" href="/pelican/theme/css/poole.css" />
+		<link rel="stylesheet" href="/pelican/theme/css/hyde.css" />
+		<link rel="stylesheet" href="/pelican/theme/css/syntax.css" />
+		<link rel="stylesheet" href="/pelican/theme/css/style.css" />
+		<script type="text/javascript" src="/pelican/theme/css/all.js" />
+
+		</script>
+	</head>
+
+	<body class="theme-base-0g">
+	<div class="test-nav">
+		<a href="/pelican">Home</a>
+				<a href="/categories.html">Category</a>
+				<a href="/tags.html">Tag</a>
+	</div>
+		<div class="content container">
+<div class="post">
+  <h2 class="post-title">re module in python</h2>
+	<span class="post-date">Thu 21 January 2021</span>
+	<p>let's first see the <code>re.search()</code></p>
+<div class="highlight"><pre><span></span><code>[root@localhost ~]# python3
+some tested text
+n 3.9.1 (default, Dec  8 2020, 00:00:00)
+[GCC 10.2.1 20201125 (Red Hat 10.2.1-9)] on linux
+Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.
+&gt;&gt;&gt; import re
+&gt;&gt;&gt; result = &#39;Joe Biden Wins&#39;
+&gt;&gt;&gt; search = re.search(&#39;wins&#39;,result)
+&gt;&gt;&gt; print(search)
+None
+&gt;&gt;&gt; search = re.search(&#39;Wins&#39;,result)
+&gt;&gt;&gt; print(search)
+&lt;re.Match object; span=(10, 14), match=&#39;Wins&#39;&gt;
+</code></pre></div>
+
+<blockquote>
+<h4>Conclusion</h4>
+<ul>
+<li>we can use <code>re.search(args)</code> to find a string which contains args.</li>
+<li>it's case sensitive</li>
+</ul>
+</blockquote>
+<hr>
+<p>but <code>match() &amp; fullmatch()</code>, i really don't know what the purpose they exist for?</p>
+<div class="highlight"><pre><span></span><code>&gt;&gt;&gt; match = re.match(&#39;Wins&#39;,result)
+&gt;&gt;&gt; print(match)
+None
+&gt;&gt;&gt; fullmatch = re.fullmatch(&#39;Wins&#39;,result)
+&gt;&gt;&gt; print(fullmatch)
+None
+</code></pre></div>
+</div>
+		</div>
+	</body>
+</html>

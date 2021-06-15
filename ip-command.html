@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+		<!-- Enable responsiveness on mobile devices-->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+		<title>blog</title>
+		<link rel="shortcut icon" href="/pelican/theme/favicon/favicon.ico" />
+		<link rel="stylesheet" href="/pelican/theme/css/poole.css" />
+		<link rel="stylesheet" href="/pelican/theme/css/hyde.css" />
+		<link rel="stylesheet" href="/pelican/theme/css/syntax.css" />
+		<link rel="stylesheet" href="/pelican/theme/css/style.css" />
+		<script type="text/javascript" src="/pelican/theme/css/all.js" />
+
+		</script>
+	</head>
+
+	<body class="theme-base-0g">
+	<div class="test-nav">
+		<a href="/pelican">Home</a>
+				<a href="/categories.html">Category</a>
+				<a href="/tags.html">Tag</a>
+	</div>
+		<div class="content container">
+<div class="post">
+  <h2 class="post-title">ip command</h2>
+	<span class="post-date">Wed 09 June 2021</span>
+	<p>Display information only for device wlan1</p>
+<div class="highlight"><pre><span></span><code>root@raspberrypi:~# ip a show wlan1
+4: wlan1: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc mq state UP group default qlen 1000
+    link/ether 00:c0:ca:97:df:92 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.50.220/24 brd 192.168.50.255 scope global noprefixroute wlan1
+       valid_lft forever preferred_lft forever
+    inet6 fe80::eafd:c1fb:1b0e:9c98/64 scope link 
+       valid_lft forever preferred_lft forever
+</code></pre></div>
+
+<hr>
+</div>
+		</div>
+	</body>
+</html>

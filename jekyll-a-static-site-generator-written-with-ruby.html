@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+		<!-- Enable responsiveness on mobile devices-->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+		<title>blog</title>
+		<link rel="shortcut icon" href="/pelican/theme/favicon/favicon.ico" />
+		<link rel="stylesheet" href="/pelican/theme/css/poole.css" />
+		<link rel="stylesheet" href="/pelican/theme/css/hyde.css" />
+		<link rel="stylesheet" href="/pelican/theme/css/syntax.css" />
+		<link rel="stylesheet" href="/pelican/theme/css/style.css" />
+		<script type="text/javascript" src="/pelican/theme/css/all.js" />
+
+		</script>
+	</head>
+
+	<body class="theme-base-0g">
+	<div class="test-nav">
+		<a href="/pelican">Home</a>
+				<a href="/categories.html">Category</a>
+				<a href="/tags.html">Tag</a>
+	</div>
+		<div class="content container">
+<div class="post">
+  <h2 class="post-title">Jekyll, a static site generator written with Ruby</h2>
+	<span class="post-date">Mon 05 October 2020</span>
+	<p>first of all, let's install the essential packages</p>
+<div class="highlight"><pre><span></span><code>[root@localhost ~]# dnf install make gcc gcc-c++ -y &amp;
+</code></pre></div>
+
+<p>search for the package that provides command <code>gem</code></p>
+<div class="highlight"><pre><span></span><code>[root@localhost ~]# dnf provides gem
+rubygems-3.1.2-128.fc32.noarch : The Ruby standard for packaging ruby libraries
+Repo        : fedora
+Matched from:
+Provide    : gem = 3.1.2-128.fc32
+
+rubygems-3.1.2-130.fc32.noarch : The Ruby standard for packaging ruby libraries
+Repo        : updates
+Matched from:
+Provide    : gem = 3.1.2-130.fc32
+</code></pre></div>
+
+<p>install <code>ruby</code>, <code>ruby-devel</code> and <code>rubygems</code></p>
+<div class="highlight"><pre><span></span><code>[root@localhost ~]# dnf install ruby ruby-devel rubygems -y &amp;
+</code></pre></div>
+
+<p>then install <code>bundler</code> and <code>jekyll</code></p>
+<div class="highlight"><pre><span></span><code>[root@localhost ~]# gem install bundler jekyll
+</code></pre></div>
+
+<hr>
+<p>let's create a new site</p>
+<div class="highlight"><pre><span></span><code>[root@localhost ~]# jekyll new jekyll
+[root@localhost ~]# cd jekyll/
+[root@localhost jekyll]# bundle exec jekyll serve
+Configuration file: /root/jekyll/_config.yml
+            Source: /root/jekyll
+       Destination: /root/jekyll/_site
+ Incremental build: disabled. Enable with --incremental
+      Generating...
+       Jekyll Feed: Generating feed for posts
+                    done in 2.095 seconds.
+ Auto-regeneration: enabled for &#39;/root/jekyll&#39;
+    Server address: http://127.0.0.1:4000/
+  Server running... press ctrl-c to stop.
+</code></pre></div>
+</div>
+		</div>
+	</body>
+</html>

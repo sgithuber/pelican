@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+		<!-- Enable responsiveness on mobile devices-->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+		<title>blog</title>
+		<link rel="shortcut icon" href="/pelican/theme/favicon/favicon.ico" />
+		<link rel="stylesheet" href="/pelican/theme/css/poole.css" />
+		<link rel="stylesheet" href="/pelican/theme/css/hyde.css" />
+		<link rel="stylesheet" href="/pelican/theme/css/syntax.css" />
+		<link rel="stylesheet" href="/pelican/theme/css/style.css" />
+		<script type="text/javascript" src="/pelican/theme/css/all.js" />
+
+		</script>
+	</head>
+
+	<body class="theme-base-0g">
+	<div class="test-nav">
+		<a href="/pelican">Home</a>
+				<a href="/categories.html">Category</a>
+				<a href="/tags.html">Tag</a>
+	</div>
+		<div class="content container">
+<div class="post">
+  <h2 class="post-title">how to install nextcloud in linux</h2>
+	<span class="post-date">Thu 13 February 2020</span>
+	<p>时间♪ 令和 2 年 2 月 13 日, 19:41 rain 温度大概10/17°C</p>
+<p>this is a fedora 31 server</p>
+<div class="highlight"><pre><span></span><code>[root@localhost ~]# cat /etc/fedora-release
+Fedora releases 31 (Thirty One)
+</code></pre></div>
+
+<p>kernel版本</p>
+<div class="highlight"><pre><span></span><code>[root@localhost ~]# uname -r
+5.4.18-200.fc31.x86_64
+</code></pre></div>
+
+<p>优化<code>/etc/sysctl.conf</code></p>
+<div class="highlight"><pre><span></span><code># vim /etc/sysctl.conf
+...
+net.ipv4.ip_forward = 1
+net.ipv4.tcp_congestion_control = bbr
+net.core.rmem_max = 26214400
+~
+: wq
+# sysctl -p
+</code></pre></div>
+
+<p>install httpd</p>
+<div class="highlight"><pre><span></span><code># dnf install httpd -y
+# dnf info httpd | grep Version
+Version: 2.4.41
+# systemctl enable --now httpd
+</code></pre></div>
+
+<p>configure firewall for httpd</p>
+<div class="highlight"><pre><span></span><code># firewall-cmd --perm --add-rich-rule=&quot;rule family=ipv4 source address=45.76.243.217/32 service name=http accept&quot;
+# firewall-cmd --perm --add-rich-rule=&quot;rule family=ipv4 source address=45.76.243.217/32 service name=https accept&quot;
+# firewall-cmd --reload
+</code></pre></div>
+
+<p>install php</p>
+<div class="highlight"><pre><span></span><code># dnf install php php-fpm php-gd php-zip php-mysqlnd -y
+# systemctl enable --now php-fpm
+# dnf info php php-fpm | grep Version
+Version : 7.3.14
+Version : 7.3.14
+</code></pre></div>
+
+<p>download nextcloud package</p>
+<div class="highlight"><pre><span></span><code># wget https://download.nextcloud.com/server/releases/nextcloud-18.0.0.zip -P /var/www/html
+# cd /var/www/html
+# unzip nextcloud-18.0.0.zip -d ./
+# chown apache:apache -R nextcloud
+# cp /etc/httpd/conf/httpd.conf /etc/httpd/conf/httpd.conf.backup
+# vim /etc/httpd/conf/httpd.conf
+...
+&lt;Directory /var/www/html/nextcloud&gt;
+  Require all granted
+  Options +FollowSymLinks
+  AllowOverride All
+&lt;/Directory&gt;
+&lt;VirtualHost *:80&gt;
+  ServerName
+  cloud.initiald.app
+  DocumentRoot &quot;/var/www/html/nextcloud&quot;
+&lt;/VirtualHost&gt;
+~
+:wq
+
+# systemctl restart httpd
+# audit2allow -a
+#============= httpd_t ==============
+#!!!! This avc can be allowed using the boolean &#39;httpd_unified&#39;
+allow httpd_t httpd_sys_content_t:dir write;
+# setsebool -P httpd_unified on
+</code></pre></div>
+
+<p>install cronie</p>
+<div class="highlight"><pre><span></span><code># dnf install cronie -y
+# systemctl enable --now crond
+</code></pre></div>
+
+<p>install mariadb</p>
+<div class="highlight"><pre><span></span><code># dnf install mariadb-server -y
+# systemctl enable --now mariadb
+# mysql_secure_installation
+</code></pre></div>
+
+<p>create mysql database for nextcloud</p>
+<div class="highlight"><pre><span></span><code># mysql -uroot -p
+Enter password:
+...
+Server version: 10.3.21-MariaDB MariaDB Server
+...
+MariaDB [(none)]&gt; create user &#39;nextcloud@localhost&#39; identified by &#39;nextcloud20200214&#39;;
+Query OK, 0 rows affected (0.002 sec)
+MariaDB [(none)]&gt; select host,user from mysql.user;
++-----------+--------------------------+
+| Host      | User
+|
++-----------+--------------------------+
+| %         | nextcloud@localhost      |
+| 127.0.0.1 | root
+| ::1       | root
+| localhost | root
++-----------+--------------------------+
+4 rows in set (0.001 sec)
+MariaDB [(none)]&gt; create user &#39;nextcloud&#39;@&#39;localhost&#39; identified by &#39;nextcloud20200214&#39;;
+Query OK, 0 rows affected (0.003 sec)
+MariaDB [(none)]&gt; select host,user from mysql.user;
++------------+--------------------------+
+| Host       | User
++------------+--------------------------+
+| %          | nextcloud@localhost      |
+| 127.0.0.1  | root
+| ::1        | root
+| localhost  | nextcloud
+| localhost  | root
++------------+--------------------------+
+5 rows in set (0.001 sec)
+MariaDB [(none)]&gt; drop user &#39;nextcloud@localhost&#39;@&#39;%&#39;;
+Query OK, 0 rows affected (0.001 sec)
+MariaDB [(none)]&gt; select host,user from mysql.user;
++-----------+------------+
+| host      | user
++-----------+------------+
+| 127.0.0.1 | root
+| ::1       | root
+| localhost | nextcloud  |
+| localhost | root
++-----------+------------+
+4 rows in set (0.001 sec)
+MariaDB [(none)]&gt; create database nextcloud default character set utf8;
+Query OK, 1 row affected (0.002 sec)
+MariaDB [(none)]&gt; show create database nextcloud;
++------------+-------------------------------------------------------------------------------------------------+
+| Database   | Create Database
++------------+-------------------------------------------------------------------------------------------------+
+| nextcloud  | CREATE DATABASE `nextcloud` /*!40100 DEFAULT CHARACTER SET utf8*/                               |
++------------+-------------------------------------------------------------------------------------------------+
+1 row in set (0.000 sec)
+MariaDB [(none)]&gt; grant all on nextcloud.* to &#39;nextcloud&#39;@&#39;localhost&#39;;
+Query OK, 0 rows affected (0.002 sec)
+MariaDB [(none)]&gt; flush privileges;
+Query OK, 0 rows affected (0.002 sec)
+
+# mysql -unextcloud -p
+Enter password:
+...
+Server version: 10.3.21-MariaDB MariaDB Server
+...
+MariaDB [(none)]&gt; show databases;
++-------------------------+
+| Database                |
++-------------------------+
+| information_schema      |
+| nextcloud               |
++-------------------------+
+2 rows in set (0.002 sec)
+</code></pre></div>
+
+<p>create nextcloud date folder</p>
+<div class="highlight"><pre><span></span><code># mkdir /nextcloud
+# chown apache:apache -R /nextcloud/
+# ll -ldZ /nextcloud/
+drwxr-xr-x. 2 apache apache unconfined_u:object_r:default_t:s0 4096 Feb 14 13:49 /nextcloud/
+# semanage fcontext -a -t httpd_sys_content_t &quot;/nextcloud(./*)?&quot;
+# restorecon -Rv /nextcloud/
+Relabeled /nextcloud from unconfined_u:object_r:default_t:s0 to unconfined_u:object_r:httpd_sys_content_t:s0
+
+# ll -ldZ /nextcloud/
+drwxr-xr-x. 2 apache apache unconfined_u:object_r:httpd_sys_content_t:s0 4096 Feb 14 13:49 /nextcloud/
+# audit2allow -a
+#============= httpd_t ==============
+#!!!! This avc can be allowed using one of the these booleans:
+# httpd_can_network_connect, httpd_graceful_shutdown,
+httpd_can_network_relay, nis_enabled
+allow httpd_t http_port_t:tcp_socket name_connect;
+#!!!! This avc is allowed in the current policy
+allow httpd_t httpd_sys_content_t:dir write;
+
+# setsebool -P httpd_can_network_connect on
+</code></pre></div>
+
+<p>install certbot</p>
+<div class="highlight"><pre><span></span><code># dnf install certbot certbot-apache -y
+# firewall-cmd --add-port={80/tcp,443/tcp}
+success
+# certbot certonly --apache
+Saving debug log to /var/log/letsencrypt/letsencrypt.log
+Plugins selected: Authenticator apache, Installer apache
+Enter email address (used for urgent renewal and security notices) (Enter &#39;c&#39; to cancel): karliyssin@gmail.com
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Please read the Terms of Service at
+https://letsencrypt.org/documents/LE-SA-v1.2-November-15-2017.pdf. You must
+agree in order to register with the ACME server at
+https://acme-v02.api.letsencrypt.org/directory
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+(A)gree/(C)ancel: A
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Would you be willing to share your email address with the Electronic Frontier
+Foundation, a founding partner of the Let&#39;s Encrypt project and the non-profit
+organization that develops Certbot? We&#39;d like to send you email about our work
+encrypting the web, EFF news, campaigns, and ways to support digital freedom.
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+(Y)es/(N)o: N
+Which names would you like to activate HTTPS for?
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+1: cloud.initiald.app
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Select the appropriate numbers separated by commas and/or spaces, or leave input
+blank to select all options shown (Enter &#39;c&#39; to cancel): 1
+Obtaining a new certificate
+Performing the following challenges:
+http-01 challenge for cloud.initiald.app
+Waiting for verification...
+Cleaning up challenges
+IMPORTANT NOTES:
+- Congratulations! Your certificate and chain have been saved at:
+/etc/letsencrypt/live/cloud.initiald.app/fullchain.pem
+Your key file has been saved at:
+/etc/letsencrypt/live/cloud.initiald.app/privkey.pem
+Your cert will expire on 2020-05-14. To obtain a new or tweaked
+version of this certificate in the future, simply run certbot
+again. To non-interactively renew *all* of your certificates, run
+&quot;certbot renew&quot;
+- Your account credentials have been saved in your Certbot
+configuration directory at /etc/letsencrypt. You should make a
+secure backup of this folder now. This configuration directory will
+also contain certificates and private keys obtained by Certbot so
+making regular backups of this folder is ideal.
+- If you like Certbot, please consider supporting our work by:
+Donating to ISRG / Let&#39;s Encrypt: https://letsencrypt.org/donate
+Donating to EFF:
+https://eff.org/donate-le
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code># vim /etc/httpd/conf/httpd.conf
+...
+&lt;Directory /var/www/html/nextcloud&gt;
+  Require all granted
+  Options +FollowSymLinks
+  AllowOverride All
+&lt;/Directory&gt;
+&lt;VirtualHost *:80&gt;
+  ServerName cloud.initiald.app
+  DocumentRoot &quot;/var/www/html/nextcloud&quot;
+&lt;/VirtualHost&gt;
+
+LoadModule ssl_module modules/mod_ssl.so
+&lt;VirtualHost *:443&gt;
+  ServerName cloud.initiald.app
+  DocumentRoot &quot;/var/www/html/nextcloud&quot;
+  SSLEngine on
+  SSLCertificateFile &quot;/etc/letsencrypt/live/cloud.initiald.app/fullchain.pem&quot;
+  SSLCertificateKeyFile &quot;/etc/letsencrypt/live/cloud.initiald.app/privkey.pem&quot;
+&lt;/VirtualHost&gt;
+~
+:wq
+</code></pre></div>
+
+<p>backup ssl certificate file and key</p>
+<div class="highlight"><pre><span></span><code># mkdir certbot
+# mkdir certbot/cloud.initiald.app -p
+# cd certbot/cloud.initiald.app
+# cp /etc/letsencrypt/live/cloud.initiald.app/fullchain.pem ./
+# cp /etc/letsencrypt/live/cloud.initiald.app/privkey.pem ./
+# md5sum ./* &gt; check.md5
+# ls
+check.md5 fullchain.pem privkey.pem
+# cd ../../
+# tar cvf cloud.initiald.app.tar cloud.initiald.app/
+# mkdir /var/www/html/download
+# chown apache:apache -R /var/www/html/download/
+# mv certbot/cloud.initiald.app .tar /var/www/html/download/
+# vim /etc/httpd/conf/httpd.conf
+...
+&lt;Directory /var/www/html/download&gt;
+  Require all granted
+  Options +FollowSymLinks
+  IndexOptions Charset=UTF-8
+  IndexOptions NameWidth=*
+  AllowOverride All
+&lt;/Directory&gt;
+&lt;VirtualHost *:80&gt;
+  ServerName download.initiald.app
+  DocumentRoot &quot;/var/www/html/download&quot;
+&lt;/VirtualHost&gt;
+~
+:wq
+</code></pre></div>
+
+<p>only if mod_autoindex has been loaded can IndexOptions proceed to work.</p>
+<div class="highlight"><pre><span></span><code># cat /etc/httpd/conf.modules.d/* | grep mod_autoindex
+LoadModule autoindex_module modules/mod_autoindex.so
+</code></pre></div>
+
+<p>directory listings will always appear first. It doesn’t matter the order FancyIndexing and FoldersFirst.</p>
+<div class="highlight"><pre><span></span><code># vim /etc/httpd/conf/httpd.conf
+...
+&lt;Directory /var/www/html/download&gt;
+...
+  IndexOptions FancyIndexing
+  IndexOptions FoldersFirst
+...
+&lt;/Directory&gt;
+...
+~
+:x
+</code></pre></div>
+
+<p>♪ 令和 2 年 2 月 13 日
+once SuppressSize is enabled, size of files will not appear. It doesn’t matter the order FancyIndexing and SuppressSize.</p>
+<div class="highlight"><pre><span></span><code># vim /etc/httpd/conf/httpd.conf
+...
+&lt;Directory /var/www/html/download&gt;
+...
+  IndexOptions FancyIndexing
+  IndexOptions SuppressSize
+...
+&lt;/Directory&gt;
+...
+~
+:x
+</code></pre></div>
+
+<p>make font and icon size large for easy to read. It doesn’t matter the order FancyIndexing and HTMLTable.</p>
+<div class="highlight"><pre><span></span><code># vim /etc/httpd/conf/httpd.conf
+...
+&lt;Directory /var/www/html/download&gt;
+...
+  IndexOptions FancyIndexing
+  IndexOptions HTMLTable
+...
+&lt;/Directory&gt;
+...
+~
+:x
+</code></pre></div>
+
+<p>Set the default ordering. I think the elegant way is IndexOptions first, and then IndexOrderDefault. IndexOrderDefault’s Syntax: IndexOrderDefault Ascending | Descending Name | Date | Size | Description</p>
+<div class="highlight"><pre><span></span><code># date &quot;+%F-%H:%M&quot;
+2020-03-01-03:17
+</code></pre></div>
+
+<p>The httpd version now is 2.4.41, maybe there's a bug as the <code>IndexOrderDefault Ascending Date</code> absolutely doesn't work.</p>
+<div class="highlight"><pre><span></span><code>[root@localhost ~]# rpm -qa httpd
+httpd-2.4.41-12.fc31.x86_64
+</code></pre></div>
+
+<p>But <code>IndexOrderDefault Descending Date</code> works well.</p>
+<div class="highlight"><pre><span></span><code>[root@localhost ~]# vim /etc/httpd/conf/httpd.conf
+...
+&lt;Directory /var/www/html/download&gt;
+...
+  IndexOptions FancyIndexing
+  IndexOrderDefault Descending Date
+...
+&lt;/Directory&gt;
+...
+~
+:x
+</code></pre></div>
+
+<p>AllowOverride is valid only in <Directory> sections specified without regular expressions, not in <Location>, <DirectoryMatch> or <Files> sections.I find that <code>apache regular expressions</code> is a pain to learn, I give up in 25 seconds.Default AllowOverride is set to None (2.3.9 and later) , AllowOverride All (2.3.8and earlier) When AllowOverride is set to None and AllowOverrideList is set to None, the server will not read .htaccess files.When AllowOverride is set to All, then any directive which has in the .htaccess is
+allowed.Beacuse default AllowOverrideList is set to None, so take nextcloud for example,nextcloud contains a hiden .htaccess file. That means only if we set AllowOverride to All can nextcloud proceed to work.For security and performance reasons, do not set AllowOverride to anything other than None in your <Directory "/"> block.</p>
+<div class="highlight"><pre><span></span><code># mv /etc/httpd/conf.d/welcome.conf /etc/httpd/conf.d/welcome.conf.backup
+# certbot certonly --apache
+Saving debug log to /var/log/letsencrypt/letsencrypt.log
+Plugins selected: Authenticator apache, Installer apache
+Which names would you like to activate HTTPS for?
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+1: cloud.initiald.app
+2: download.initiald.app
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Select the appropriate numbers separated by commas and/or spaces, or leave input
+blank to select all options shown (Enter &#39;c&#39; to cancel): 2
+Obtaining a new certificate
+Performing the following challenges:
+http-01 challenge for download.initiald.app
+Waiting for verification...
+Cleaning up challenges
+IMPORTANT NOTES:
+- Congratulations! Your certificate and chain have been saved at:
+/etc/letsencrypt/live/download.initiald.app/fullchain.pem
+Your key file has been saved at:
+/etc/letsencrypt/live/download.initiald.app/privkey.pem
+Your cert will expire on 2020-05-14. To obtain a new or tweaked
+version of this certificate in the future, simply run certbot
+again. To non-interactively renew *all* of your certificates, run
+&quot;certbot renew&quot;
+
+# vim /etc/httpd/conf/httpd.conf
+...
+&lt;Directory /var/www/html/download&gt;
+  Require all granted
+  Options +FollowSymLinks
+  AllowOverride All
+&lt;/Directory&gt;
+&lt;VirtualHost *:80&gt;
+  ServerName download.initiald.app
+  DocumentRoot &quot;/var/www/html/download&quot;
+  Redirect permanent / https://download.initiald.app
+&lt;/VirtualHost&gt;
+&lt;VirtualHost *:443&gt;
+  ServerName download.initiald.app
+  DocumentRoot &quot;/var/www/html/download&quot;
+  SSLEngine on
+  SSLCertificateFile &quot;/etc/letsencrypt/live/download.initiald.app/fullchain.pem&quot;
+  SSLCertificateKeyFile &quot;/etc/letsencrypt/live/download.initiald.app/privkey.pem&quot;
+&lt;IfModule mod_headers.c&gt;
+  Header always set Strict-Transport-Security &quot;max-age=15552000;includeSubDomains&quot;
+&lt;/IfModule&gt;
+&lt;/VirtualHost&gt;
+~
+:wq
+# systemctl restart httpd
+</code></pre></div>
+
+<p>Enable HTTP Strict Transport Security
+While redirecting all traffic to HTTPS is good, it may not completely prevent man-in-the-middle attacks. Thus administrators are encouraged to set the HTTP Strict Transport Security header, which instructs browsers to not allow any connection to the Nextcloud instance using HTTP, and it attempts to prevent site visitors from bypassing invalid certificate warnings.This can be achieved by setting the following settings within the Apache VirtualHost file:</p>
+<div class="highlight"><pre><span></span><code># vim /etc/httpd/conf/httpd.conf
+&lt;VirtualHost *:443&gt;
+...
+&lt;IfModule mod_headers.c&gt;
+  Header always set Strict-Transport-Security &quot;max-age=15552000;includeSubDomains&quot;
+&lt;/IfModule&gt;
+&lt;/VirtualHost&gt;
+~
+:wq
+</code></pre></div>
+
+<p>Redirect all unencrypted traffic to HTTPS
+To redirect all HTTP traffic to HTTPS administrators are encouraged to issue a permanent redirect using the 301 status code. When using Apache this can be achieved by a setting such as the following in the Apache VirtualHosts configuration:</p>
+<div class="highlight"><pre><span></span><code># vim /etc/httpd/conf/httpd.conf
+...
+&lt;VirtualHost *:80&gt;
+...
+  Redirect permanent / https://cloud.nextcloud.com/
+&lt;/VirtualHost&gt;
+~
+:wq
+</code></pre></div>
+
+<p>Disable preview image generation
+Nextcloud is able to generate preview images of common filetypes such as images or text files. By default the preview generation for some file types that we consider secure enough for deployment is enabled by default. However, administrators should be aware that these previews are generated using PHP libraries written in C which might be vulnerable to attack vectors. For high security deployments we recommend disabling the preview generation by setting the enable_previews switch to false in config.php. As an administrator you are also able to manage which preview providers are enabled by modifying the enabledPreviewProviders option switch.</p>
+<div class="highlight"><pre><span></span><code># vim /var/www/html/nextcloud/config/config.php
+1 &lt;?php
+2 $CONFIG = array (
+3 &#39;instanceid&#39; =&gt; &#39;oc746bm6wrje&#39;,
+4 &#39;passwordsalt&#39; =&gt; &#39;iUBMB2eAazRknfgWEPdp+TMpb33MzK&#39;,
+5 &#39;secret&#39; =&gt; &#39;xdqFpXgfeGJtOrg7YYYZA16lckvv+wcVivkdXcdelzNTs60X&#39;,
+6 &#39;trusted_domains&#39; =&gt;
+7 array (
+8 0 =&gt; &#39;cloud.initiald.app&#39;,
+9 ),
+10 &#39;datadirectory&#39; =&gt; &#39;/nextcloud/&#39;,
+11 &#39;dbtype&#39; =&gt; &#39;mysql&#39;,
+12 &#39;version&#39; =&gt; &#39;18.0.0.10&#39;,
+13 &#39;overwrite.cli.url&#39; =&gt; &#39;http://cloud.initiald.app&#39;,
+14 &#39;dbname&#39; =&gt; &#39;nextcloud&#39;,
+15 &#39;dbhost&#39; =&gt; &#39;localhost&#39;,
+16 &#39;dbport&#39; =&gt; &#39;&#39;,
+17 &#39;dbtableprefix&#39; =&gt; &#39;oc_&#39;,
+18 &#39;mysql.utf8mb4&#39; =&gt; true,
+19 &#39;dbuser&#39; =&gt; &#39;nextcloud&#39;,
+20 &#39;dbpassword&#39; =&gt; &#39;nextcloud20200214&#39;,
+21 &#39;installed&#39; =&gt; true,
+22 &#39;enable_previews&#39; =&gt; false,
+23 );
+~
+:wq
+
+# vim /etc/httpd/conf/httpd.conf
+...
+#load headers_module manually
+LoadModule headers_module modules/mod_headers.so
+#load ssl_module manually
+LoadModule ssl_module modules/mod_ssl.so
+&lt;Directory /var/www/html/nextcloud&gt;
+  Require all granted
+  Options +FollowSymLinks
+  AllowOverride All
+&lt;/Directory&gt;
+&lt;VirtualHost *:80&gt;
+  ServerName cloud.initiald.app
+  DocumentRoot &quot;/var/www/html/nextcloud&quot;
+  Redirect permanent / https://cloud.initiald.app
+&lt;/VirtualHost&gt;
+&lt;VirtualHost *:443&gt;
+  ServerName cloud.initiald.app
+  DocumentRoot &quot;/var/www/html/nextcloud&quot;
+  SSLEngine on
+  SSLCertificateFile &quot;/etc/letsencrypt/live/cloud.initiald.app/fullchain.pem&quot;
+  SSLCertificateKeyFile &quot;/etc/letsencrypt/live/cloud.initiald.app/privkey.pem&quot;
+&lt;IfModule mod_headers.c&gt;
+  Header always set Strict-Transport-Security &quot;max-age=15552000;includeSubDomains&quot;
+  Header always set X-Content-Type-Options: nosniff
+  Header always set X-XSS-Protection: &quot;1; mode=block&quot;
+  Header always set X-Robots-Tag: none
+  Header always set X-Frame-Options: SAMEORIGIN
+  Header always set Referrer-Policy: no-referrer
+&lt;/IfModule&gt;
+&lt;/VirtualHost&gt;
+~
+:wq
+</code></pre></div>
+
+<p>[PHP] Error: You are using a fallback implementation of the intl extension. Installing the native one is highly recommended instead. at /var/www/html/nextcloud/3rdparty/patchwork/utf8/src/Patchwork/Utf8/Bootup/intl.php#18 GET /index.php/apps/logreader/poll? lastReqId=XktvYAx9LUjDfTH1zfADWgAAAIY from 45.76.243.217 by gaowu at 2020-02-18T05:00:17+00:00</p>
+<div class="highlight"><pre><span></span><code># dnf install php-intl -y
+# systemctl restart php-fpm
+</code></pre></div>
+
+<p>Pretty URLs
+remove the index.php in all Nextcloud URLs, mod_env and mod_rewrite must be installed on your webserver and the .htaccess must be writable by the HTTP user.</p>
+<p>loaded modules</p>
+<div class="highlight"><pre><span></span><code># cd /etc/httpd/conf.modules.d/
+# ls
+00-base.conf 00-lua.conf 00-optional.conf 00-ssl.conf 01-cgi.conf README 15-php.conf
+10-proxy_h2.conf 00-dav.conf 00-mpm.conf 00-proxy.conf 00-systemd.conf 10-h2.conf
+# cat 00-ssl.conf | grep ssl
+LoadModule ssl_module modules/mod_ssl.so
+# cat 00-base.conf | grep mod_env
+LoadModule env_module modules/mod_env.so
+# cat 00-base.conf | grep mod_rewrite
+LoadModule rewrite_module modules/mod_rewrite.so
+# dnf install php-process -y
+# systemctl restart php-fpm
+# ls -alh .htaccess
+-rw-r--r--. 1 apache apache 2.6K Feb 14 13:54 .htaccess
+# cp .htaccess .htaccess.backup
+# md5sum .htaccess
+5b70ce7132b93cfd0189b617495a5e94 .htaccess
+# md5sum .htaccess.backup
+5b70ce7132b93cfd0189b617495a5e94 .htaccess.backup
+# sudo -u apache php occ maintenance:update:htaccess
+The current PHP memory limit is below the recommended value of 512MB. .htaccess has been updated
+
+Then you can set in the config.php two variables:
+```text
+# vim /var/www/html/nextcloud/config/config.php
+1 &lt;?php
+2 $CONFIG = array (
+3 &#39;overwrite.cli.url&#39; =&gt; &#39;https://cloud.initiald.app/&#39;,
+4 &#39;htaccess.RewriteBase&#39; =&gt; &#39;/&#39;,
+5 &#39;enable_previews&#39; =&gt; false,
+6 &#39;instanceid&#39; =&gt; &#39;oc746bm6wrje&#39;,
+7 &#39;passwordsalt&#39; =&gt; &#39;iUBMB2eAazRknfgWEPdp+TMpb33MzK&#39;,
+8 &#39;secret&#39; =&gt; &#39;xdqFpXgfeGJtOrg7YYYZA16lckvv+wcVivkdXcdelzNTs60X&#39;,
+9 &#39;trusted_domains&#39; =&gt;
+10 array (
+11 0 =&gt; &#39;cloud.initiald.app&#39;,
+12 ),
+13 &#39;datadirectory&#39; =&gt; &#39;/nextcloud/&#39;,
+14 &#39;dbtype&#39; =&gt; &#39;mysql&#39;,
+15 &#39;version&#39; =&gt; &#39;18.0.0.10&#39;,
+16 &#39;overwrite.cli.url&#39; =&gt; &#39;http://cloud.initiald.app&#39;,
+17 &#39;dbname&#39; =&gt; &#39;nextcloud&#39;,
+18 &#39;dbhost&#39; =&gt; &#39;localhost&#39;,
+19 &#39;dbport&#39; =&gt; &#39;&#39;,
+20 &#39;dbtableprefix&#39; =&gt; &#39;oc_&#39;,
+21 &#39;mysql.utf8mb4&#39; =&gt; true,
+22 &#39;dbuser&#39; =&gt; &#39;nextcloud&#39;,
+23 &#39;dbpassword&#39; =&gt; &#39;nextcloud20200214&#39;,
+24 &#39;installed&#39; =&gt; true,
+25 );
+~
+:wq
+</code></pre></div>
+
+<p>This instance is missing some recommended PHP modules. For improved performance and better compatibility it is highly recommended to install them.</p>
+<p>• imagick</p>
+<div class="highlight"><pre><span></span><code># dnf install php-pecl-imagick -y
+# dnf info php-pecl-imagick | grep Version
+Version: 3.4.4
+
+# systemctl restart php-fpm
+php -m
+</code></pre></div>
+</div>
+		</div>
+	</body>
+</html>

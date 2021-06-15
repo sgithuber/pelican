@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+		<!-- Enable responsiveness on mobile devices-->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+		<title>blog</title>
+		<link rel="shortcut icon" href="/pelican/theme/favicon/favicon.ico" />
+		<link rel="stylesheet" href="/pelican/theme/css/poole.css" />
+		<link rel="stylesheet" href="/pelican/theme/css/hyde.css" />
+		<link rel="stylesheet" href="/pelican/theme/css/syntax.css" />
+		<link rel="stylesheet" href="/pelican/theme/css/style.css" />
+		<script type="text/javascript" src="/pelican/theme/css/all.js" />
+
+		</script>
+	</head>
+
+	<body class="theme-base-0g">
+	<div class="test-nav">
+		<a href="/pelican">Home</a>
+				<a href="/categories.html">Category</a>
+				<a href="/tags.html">Tag</a>
+	</div>
+		<div class="content container">
+<div class="post">
+  <h2 class="post-title">traffic redirection with firewall</h2>
+	<span class="post-date">Sat 06 March 2021</span>
+	<p>Firewall redirection is a simple and effective method for sending web traffic to the exact server. Firewall redirection is easy to configure and maintain, with no configuration required on client machines - traffic is redirected transparently. Firewall redirection works for both HTTP and HTTPS traffic.</p>
+<p>but before we start, these below need to be configured.</p>
+<div class="highlight"><pre><span></span><code>[root@localhost ~]# sysctl -p
+net.ipv4.ip_forward = 1
+net.ipv4.tcp_congestion_control = bbr
+net.core.rmem_max = 26214400
+</code></pre></div>
+
+<hr>
+<h4>redirection with iptables [debian based linux]</h4>
+<div class="highlight"><pre><span></span><code>iptables -I INPUT -p udp -m udp -m state --state NEW,RELATED,ESTABLISHED --dport=65530 -j ACCEPT
+iptables -t nat -A PREROUTING -p udp --dport 65530 -j DNAT --to-destination 167.179.86.28:65535
+</code></pre></div>
+
+<hr>
+<h4>redirection with firewalld [redhat based linux]</h4>
+<div class="highlight"><pre><span></span><code>firewall-cmd --perm --add-forward-port=port=65530:proto=udp:toport=65535:toaddr=167.179.86.28
+firewall-cmd --reload
+</code></pre></div>
+
+<hr>
+</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+		<!-- Enable responsiveness on mobile devices-->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+		<title>blog</title>
+		<link rel="shortcut icon" href="/pelican/theme/favicon/favicon.ico" />
+		<link rel="stylesheet" href="/pelican/theme/css/poole.css" />
+		<link rel="stylesheet" href="/pelican/theme/css/hyde.css" />
+		<link rel="stylesheet" href="/pelican/theme/css/syntax.css" />
+		<link rel="stylesheet" href="/pelican/theme/css/style.css" />
+		<script type="text/javascript" src="/pelican/theme/css/all.js" />
+
+		</script>
+	</head>
+
+	<body class="theme-base-0g">
+	<div class="test-nav">
+		<a href="/pelican">Home</a>
+				<a href="/categories.html">Category</a>
+				<a href="/tags.html">Tag</a>
+	</div>
+		<div class="content container">
+<div class="post">
+  <h2 class="post-title">wireguard</h2>
+	<span class="post-date">Wed 02 December 2020</span>
+	<p><img alt="img" src="https://www.wireguard.com/img/wireguard.svg" width="1000px"></p>
+<p><a href="https://www.wireguard.com/" target="blank">WireGuard®</a> is an extremely simple yet fast and modern VPN that utilizes state-of-the-art cryptography. It aims to be faster, simpler, leaner, and more useful than IPsec, while avoiding the massive headache. It intends to be considerably more performant than OpenVPN. WireGuard is designed as a general purpose VPN for running on embedded interfaces and super computers alike, fit for many different circumstances. Initially released for the Linux kernel, it is now cross-platform (Windows, macOS, BSD, iOS, Android) and widely deployable. It is currently under heavy development, but already it might be regarded as the most secure, easiest to use, and simplest VPN solution in the industry.</p>
+<hr>
+<h4>wireguard in debian</h4>
+<div class="highlight"><pre><span></span><code>root@hongkong:/home/debian# cat /etc/debian_version 
+10.7
+</code></pre></div>
+
+<p>add <code>buster-backports</code> repolistory, it means testing version packages, maybe unstable</p>
+<blockquote>
+<h4>according to woirguard.com</h4>
+<p><code>apt install wireguard</code>, if no packages found, u need to enable this repository first.</p>
+</blockquote>
+<div class="highlight"><pre><span></span><code>root@hongkong:/home/debian# vim /etc/apt/sources.list
+...
+
+# for installing wireguard
+#deb http://deb.debian.org/debian buster-backports main 
+~
+:x
+</code></pre></div>
+
+<p>then install</p>
+<div class="highlight"><pre><span></span><code>root@hongkong:/home/debian# apt search wireguard
+Sorting... Done
+Full Text Search... Done
+wireguard/now 1.0.20200827-1~bpo10+1 all [installed,local]
+  fast, modern, secure kernel VPN tunnel (metapackage)
+
+wireguard-dkms/now 1.0.20201112-1~bpo10+1 all [installed,local]
+  fast, modern, secure kernel VPN tunnel (DKMS version)
+
+wireguard-tools/now 1.0.20200827-1~bpo10+1 amd64 [installed,local]
+  fast, modern, secure kernel VPN tunnel (userland utilities)
+
+
+root@hongkong:/home/debian# apt install wireguard wireguard-dkms wireguard-tools -y
+</code></pre></div>
+
+<p>once you successfully install wireguard packages, u can disable that repository for better system running.</p>
+<hr>
+<h4>generate keypair</h4>
+<div class="highlight"><pre><span></span><code>[root@localhost ~]# wg genkey &gt; private.key
+[root@localhost ~]# wg pubkey &lt; private.key &gt; public.key
+</code></pre></div>
+
+<hr>
+<h4>server configuration</h4>
+<div class="highlight"><pre><span></span><code>[root@localhost ~]# cat server.conf
+[Interface]
+Address = 10.10.0.1/24
+#SaveConfig = true
+SaveConfig = false
+ListenPort = 65535
+PrivateKey = 
+
+# nickname
+[Peer]
+PublicKey = 
+AllowedIPs = 10.10.0.2/32
+PersistentKeepalive = 10
+</code></pre></div>
+
+<hr>
+<h4>client configuration</h4>
+<div class="highlight"><pre><span></span><code>[root@localhost ~]# cat client.conf
+[Interface]
+Address = 10.10.0.2/32
+DNS = 8.8.8.8
+PrivateKey = 
+
+[Peer]
+AllowedIPs = 0.0.0.0/0, ::/0
+Endpoint = 119.28.130.90:65535
+PersistentKeepalive = 10
+PublicKey = 
+</code></pre></div>
+</div>
+		</div>
+	</body>
+</html>

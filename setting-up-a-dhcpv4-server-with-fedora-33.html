@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+		<!-- Enable responsiveness on mobile devices-->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+		<title>blog</title>
+		<link rel="shortcut icon" href="/pelican/theme/favicon/favicon.ico" />
+		<link rel="stylesheet" href="/pelican/theme/css/poole.css" />
+		<link rel="stylesheet" href="/pelican/theme/css/hyde.css" />
+		<link rel="stylesheet" href="/pelican/theme/css/syntax.css" />
+		<link rel="stylesheet" href="/pelican/theme/css/style.css" />
+		<script type="text/javascript" src="/pelican/theme/css/all.js" />
+
+		</script>
+	</head>
+
+	<body class="theme-base-0g">
+	<div class="test-nav">
+		<a href="/pelican">Home</a>
+				<a href="/categories.html">Category</a>
+				<a href="/tags.html">Tag</a>
+	</div>
+		<div class="content container">
+<div class="post">
+  <h2 class="post-title">setting up a dhcpv4 server with fedora 33</h2>
+	<span class="post-date">Wed 02 December 2020</span>
+	<p>dhcp package contains an Internet Systems Consortium (ISC)[互联网系统联盟] DHCP server. First, install the package </p>
+<div class="highlight"><pre><span></span><code>[root@localhost ~]# dnf install dhcp dhcp-devel -y
+Last metadata expiration check: 2:02:18 ago on Wed 02 Dec 2020 05:07:14 AM JST.
+Dependencies resolved.
+==============================================================================================================================================================================================
+ Package                                           Architecture                            Version                                              Repository                               Size
+==============================================================================================================================================================================================
+Installing:
+ dhcp-compat                                       x86_64                                  12:4.4.2-8.b1.fc33                                   fedora                                  9.1 k
+ dhcp-devel                                        x86_64                                  12:4.4.2-8.b1.fc33                                   fedora                                   37 k
+Installing dependencies:
+ dhcp-libs-static                                  x86_64                                  12:4.4.2-8.b1.fc33                                   fedora                                  249 k
+ dhcp-relay                                        x86_64                                  12:4.4.2-8.b1.fc33                                   fedora                                  640 k
+ dhcp-server                                       x86_64                                  12:4.4.2-8.b1.fc33                                   fedora                                  1.2 M
+
+Transaction Summary
+==============================================================================================================================================================================================
+Install  5 Packages
+
+Total download size: 2.1 M
+Installed size: 7.0 M
+Downloading Packages:
+(1/5): dhcp-compat-4.4.2-8.b1.fc33.x86_64.rpm                                                                                                                 8.1 kB/s | 9.1 kB     00:01    
+(2/5): dhcp-devel-4.4.2-8.b1.fc33.x86_64.rpm                                                                                                                   21 kB/s |  37 kB     00:01    
+(3/5): dhcp-libs-static-4.4.2-8.b1.fc33.x86_64.rpm                                                                                                             58 kB/s | 249 kB     00:04    
+(4/5): dhcp-relay-4.4.2-8.b1.fc33.x86_64.rpm                                                                                                                   32 kB/s | 640 kB     00:20    
+(5/5): dhcp-server-4.4.2-8.b1.fc33.x86_64.rpm                                                                                                                  56 kB/s | 1.2 MB     00:22    
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Total                                                                                                                                                          84 kB/s | 2.1 MB     00:26     
+Running transaction check
+Transaction check succeeded.
+Running transaction test
+Transaction test succeeded.
+Running transaction
+  Preparing        :                                                                                                                                                                      1/1 
+  Running scriptlet: dhcp-server-12:4.4.2-8.b1.fc33.x86_64                                                                                                                                1/5 
+  Installing       : dhcp-server-12:4.4.2-8.b1.fc33.x86_64                                                                                                                                1/5 
+  Running scriptlet: dhcp-server-12:4.4.2-8.b1.fc33.x86_64                                                                                                                                1/5 
+  Installing       : dhcp-relay-12:4.4.2-8.b1.fc33.x86_64                                                                                                                                 2/5 
+  Running scriptlet: dhcp-relay-12:4.4.2-8.b1.fc33.x86_64                                                                                                                                 2/5 
+  Installing       : dhcp-libs-static-12:4.4.2-8.b1.fc33.x86_64                                                                                                                           3/5 
+  Installing       : dhcp-devel-12:4.4.2-8.b1.fc33.x86_64                                                                                                                                 4/5 
+  Installing       : dhcp-compat-12:4.4.2-8.b1.fc33.x86_64                                                                                                                                5/5 
+  Running scriptlet: dhcp-compat-12:4.4.2-8.b1.fc33.x86_64                                                                                                                                5/5 
+  Verifying        : dhcp-compat-12:4.4.2-8.b1.fc33.x86_64                                                                                                                                1/5 
+  Verifying        : dhcp-devel-12:4.4.2-8.b1.fc33.x86_64                                                                                                                                 2/5 
+  Verifying        : dhcp-libs-static-12:4.4.2-8.b1.fc33.x86_64                                                                                                                           3/5 
+  Verifying        : dhcp-relay-12:4.4.2-8.b1.fc33.x86_64                                                                                                                                 4/5 
+  Verifying        : dhcp-server-12:4.4.2-8.b1.fc33.x86_64                                                                                                                                5/5 
+
+Installed:
+  dhcp-compat-12:4.4.2-8.b1.fc33.x86_64         dhcp-devel-12:4.4.2-8.b1.fc33.x86_64         dhcp-libs-static-12:4.4.2-8.b1.fc33.x86_64         dhcp-relay-12:4.4.2-8.b1.fc33.x86_64        
+  dhcp-server-12:4.4.2-8.b1.fc33.x86_64        
+
+Complete!
+</code></pre></div>
+
+<p>make <code>dhcp</code> service works when system restarts</p>
+<div class="highlight"><pre><span></span><code>[root@localhost ~]# systemctl enable --now dhcpd
+Created symlink /etc/systemd/system/multi-user.target.wants/dhcpd.service → /usr/lib/systemd/system/dhcpd.service.
+</code></pre></div>
+
+<p>installing the dhcp package creates a file, <code>/etc/dhcp/dhcpd.conf</code>, which is merely an empty configuration file: </p>
+<div class="highlight"><pre><span></span><code>[root@localhost ~]# cat /etc/dhcp/dhcpd.conf 
+#
+# DHCP Server Configuration file.
+#   see /usr/share/doc/dhcp-server/dhcpd.conf.example
+#   see dhcpd.conf(5) man page
+#
+</code></pre></div>
+</div>
+		</div>
+	</body>
+</html>

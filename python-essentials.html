@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+		<!-- Enable responsiveness on mobile devices-->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+		<title>blog</title>
+		<link rel="shortcut icon" href="/pelican/theme/favicon/favicon.ico" />
+		<link rel="stylesheet" href="/pelican/theme/css/poole.css" />
+		<link rel="stylesheet" href="/pelican/theme/css/hyde.css" />
+		<link rel="stylesheet" href="/pelican/theme/css/syntax.css" />
+		<link rel="stylesheet" href="/pelican/theme/css/style.css" />
+		<script type="text/javascript" src="/pelican/theme/css/all.js" />
+
+		</script>
+	</head>
+
+	<body class="theme-base-0g">
+	<div class="test-nav">
+		<a href="/pelican">Home</a>
+				<a href="/categories.html">Category</a>
+				<a href="/tags.html">Tag</a>
+	</div>
+		<div class="content container">
+<div class="post">
+  <h2 class="post-title">python essentials</h2>
+	<span class="post-date">Sat 23 January 2021</span>
+	<h4>convert a string to a list</h4>
+<div class="highlight"><pre><span></span><code>&gt;&gt;&gt; sakura = &#39;Japanese cherry, which is commonly called sakura (桜 or 櫻; さくら).&#39;
+
+&gt;&gt;&gt; temp = sakura.split(&#39; &#39;)
+&gt;&gt;&gt; list = []
+&gt;&gt;&gt; for item in temp:
+&gt;&gt;&gt;    list.append(item.strip(&#39;,;.()&#39;))
+
+&gt;&gt;&gt; list
+[&#39;Japanese&#39;,
+ &#39;cherry&#39;,
+ &#39;which&#39;,
+ &#39;is&#39;,
+ &#39;commonly&#39;,
+ &#39;called&#39;,
+ &#39;sakura&#39;,
+ &#39;桜&#39;,
+ &#39;or&#39;,
+ &#39;櫻&#39;,
+ &#39;さくら&#39;]
+</code></pre></div>
+
+<hr>
+<h4>convert a list to a string</h4>
+<div class="highlight"><pre><span></span><code>&gt;&gt;&gt; string = &#39;&#39;
+&gt;&gt;&gt; for item in list:
+&gt;&gt;&gt;     string = string + item + &#39; &#39;
+
+&gt;&gt;&gt; string.strip()
+&#39;Japanese cherry which is commonly called sakura 桜 or 櫻 さくら&#39;
+</code></pre></div>
+
+<hr>
+</div>
+		</div>
+	</body>
+</html>

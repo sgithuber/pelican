@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+		<!-- Enable responsiveness on mobile devices-->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+		<title>blog</title>
+		<link rel="shortcut icon" href="/pelican/theme/favicon/favicon.ico" />
+		<link rel="stylesheet" href="/pelican/theme/css/poole.css" />
+		<link rel="stylesheet" href="/pelican/theme/css/hyde.css" />
+		<link rel="stylesheet" href="/pelican/theme/css/syntax.css" />
+		<link rel="stylesheet" href="/pelican/theme/css/style.css" />
+		<script type="text/javascript" src="/pelican/theme/css/all.js" />
+
+		</script>
+	</head>
+
+	<body class="theme-base-0g">
+	<div class="test-nav">
+		<a href="/pelican">Home</a>
+				<a href="/categories.html">Category</a>
+				<a href="/tags.html">Tag</a>
+	</div>
+		<div class="content container">
+<div class="post">
+  <h2 class="post-title">Advanced Package Tool, or APT</h2>
+	<span class="post-date">Tue 08 June 2021</span>
+	<p>The apt package is of "important" priority in all current Debian releases, and is therefore included in a default Debian installation. </p>
+<div class="highlight"><pre><span></span><code>root@localhost:~# cat /etc/debian_version 
+10.9
+root@localhost:~# dpkg -s apt | egrep &#39;Desc|Ver&#39;
+Version: 1.8.2.3
+Description: commandline package manager
+</code></pre></div>
+
+<hr>
+<h3>apt-mark</h3>
+<p>performance of vlc is turning bad these days, let's make it won't upgrade while <code>apt upgrade</code> is excuting.</p>
+<div class="highlight"><pre><span></span><code>root@localhost:~# apt-mark hold vlc
+vlc set on hold.
+root@localhost:~# apt-mark showhold
+vlc
+root@localhost:~# apt-mark unhold vlc
+Canceled hold on vlc.
+</code></pre></div>
+
+<hr>
+<h3>apt list</h3>
+<p><code>-i</code> means <code>--installed</code>, <code>-u</code> means <code>--upgradeable</code>, <code>-a</code> means <code>--all-versions</code>.</p>
+<div class="highlight"><pre><span></span><code>root@raspberrypi:~# apt list -iua
+...
+</code></pre></div>
+
+<p>list all packages with <code>-a</code>, no matter installed or not.</p>
+<div class="highlight"><pre><span></span><code>root@raspberrypi:~# apt list -a vlc
+Listing... Done
+vlc/testing 3.0.12-0+deb10u1+rpt2 armhf [upgradable from: 3.0.12-0+deb10u1+rpt1]
+vlc/now 3.0.12-0+deb10u1+rpt1 armhf [installed,upgradable to: 3.0.12-0+deb10u1+rpt2]
+vlc/stable 3.0.12-0+deb10u1 armhf
+</code></pre></div>
+</div>
+		</div>
+	</body>
+</html>

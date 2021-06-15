@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+		<!-- Enable responsiveness on mobile devices-->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+		<title>blog</title>
+		<link rel="shortcut icon" href="/pelican/theme/favicon/favicon.ico" />
+		<link rel="stylesheet" href="/pelican/theme/css/poole.css" />
+		<link rel="stylesheet" href="/pelican/theme/css/hyde.css" />
+		<link rel="stylesheet" href="/pelican/theme/css/syntax.css" />
+		<link rel="stylesheet" href="/pelican/theme/css/style.css" />
+		<script type="text/javascript" src="/pelican/theme/css/all.js" />
+
+		</script>
+	</head>
+
+	<body class="theme-base-0g">
+	<div class="test-nav">
+		<a href="/pelican">Home</a>
+				<a href="/categories.html">Category</a>
+				<a href="/tags.html">Tag</a>
+	</div>
+		<div class="content container">
+<div class="post">
+  <h2 class="post-title">Samsung Galaxy Tab S5e Optimization</h2>
+	<span class="post-date">Fri 16 October 2020</span>
+	<blockquote>
+<p>Reference : <a href="https://forum.xda-developers.com/tab-s5e/help/debloat-adb-shell-root-t3958204" target="blank">Debloat via adb shell without root</a></p>
+</blockquote>
+<p>在dialer中输入<code>*#1234#</code>，获得作业系统的讯息Taiwan (BRI)</p>
+<div class="highlight"><pre><span></span><code>Version
+AP : T720XXU1CTI1
+
+CSC : T720OLM1CTI1
+
+Model : SM-T720
+</code></pre></div>
+
+<p>download the latest samsung firmware with this app(windows 10 system required) <a href="https://github.com/SlackingVeteran/frija/releases" target="blank">frija</a></p>
+<p><img alt="img" src="images/Frija.jpg"></p>
+<p>if file has been downloaded, the <code>CRC32 Checking</code> will automatically start.</p>
+<p><img alt="img" src="images/frija-checking-crc32.jpg"></p>
+<p>once finishing <code>CRC32 Checking</code> and the result is <code>matching</code>, then </p>
+<p><img alt="img" src="images/frija-decrypting.jpg"></p>
+<hr>
+<p>download odin from here <a href="https://samsungodin.com/download/" target="blank">samsungodin</a>, samsung pc driver from here <a href="https://samsungodin.com" target="blank">samsungodin</a></p>
+<p><img alt="img" src="images/odin-connected.jpg"></p>
+<p><img alt="img" src="images/odin-success.jpg"></p>
+<hr>
+<p>active s5e's adb shell.</p>
+<div class="highlight"><pre><span></span><code>[root@localhost ~]# adb shell
+gts4lvwifi:/ $
+</code></pre></div>
+
+<p>to show all app's names</p>
+<div class="highlight"><pre><span></span><code>gts4lvwifi:/ $ pm list packege
+</code></pre></div>
+
+<p>to disable an application.</p>
+<div class="highlight"><pre><span></span><code>gts4lvwifi:/ $ pm disable-user --user 0 package&#39;s name
+</code></pre></div>
+
+<p>to enable an disabled application.</p>
+<div class="highlight"><pre><span></span><code>gts4lvwifi:/ $ pm enable package&#39;s name
+</code></pre></div>
+
+<table>
+<thead>
+<tr>
+<th>Num</th>
+<th>App Name</th>
+<th>Package Full Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>bbc</td>
+<td>com.samsung.android.bbc.bbcagent</td>
+</tr>
+<tr>
+<td>2</td>
+<td>bixby</td>
+<td>com.samsung.android.app.settings.bixby com.samsung.systemui.bixby2 com.samsung.android.bixby.service com.samsung.android.bixby.agent com.samsung.android.bixbyvision.framework com.samsung.android.bixby.wakeup com.samsung.android.bixby.agent.dummy</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Contact</td>
+<td>com.samsung.android.app.contacts</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Dialer</td>
+<td>com.samsung.android.dialer com.samsung.android.dialer</td>
+</tr>
+<tr>
+<td>5</td>
+<td>duo</td>
+<td>com.google.android.apps.tachyon</td>
+</tr>
+<tr>
+<td>6</td>
+<td>galaxy store</td>
+<td>com.sec.android.widgetapp.samsungapps com.sec.android.app.samsungapps</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Game</td>
+<td>com.samsung.android.game.gamehome com.samsung.android.game.gametools com.samsung.android.game.gos</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Message</td>
+<td>com.samsung.android.messaging</td>
+</tr>
+<tr>
+<td>9</td>
+<td>netflix</td>
+<td>com.netflix.mediaclient com.netflix.partner.activation</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Onedrive</td>
+<td>com.microsoft.skydrive</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3>Note</h3>
+<p>进入传说中的挖煤模式:</p>
+<ol>
+<li><code>adb reboot bootloader</code></li>
+<li>完全关机的状态下，同时按住<code>电源键</code>+<code>音量加</code>+<code>音量减</code></li>
+</ol>
+<p>进入recovery模式:</p>
+<ol>
+<li><code>adb reboot recovery</code></li>
+<li>完全关机的状态下，按住<code>电源键</code>，待屏幕点亮后点按一下<code>音量减</code></li>
+</ol>
+<p>unlock/lock bootloader[OEM]</p>
+<ol>
+<li>事先连接上usb-type c数据线，接着将平板电脑关机，等屏幕黑掉之后快速按住<code>电源键</code>+<code>音量加</code>+<code>音量减</code>，就会出现</li>
+</ol>
+<p><img alt="img" src="images/oem-unlock.jpg"></p>
+</div>
+		</div>
+	</body>
+</html>

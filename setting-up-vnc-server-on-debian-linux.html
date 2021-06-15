@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+		<!-- Enable responsiveness on mobile devices-->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+		<title>blog</title>
+		<link rel="shortcut icon" href="/pelican/theme/favicon/favicon.ico" />
+		<link rel="stylesheet" href="/pelican/theme/css/poole.css" />
+		<link rel="stylesheet" href="/pelican/theme/css/hyde.css" />
+		<link rel="stylesheet" href="/pelican/theme/css/syntax.css" />
+		<link rel="stylesheet" href="/pelican/theme/css/style.css" />
+		<script type="text/javascript" src="/pelican/theme/css/all.js" />
+
+		</script>
+	</head>
+
+	<body class="theme-base-0g">
+	<div class="test-nav">
+		<a href="/pelican">Home</a>
+				<a href="/categories.html">Category</a>
+				<a href="/tags.html">Tag</a>
+	</div>
+		<div class="content container">
+<div class="post">
+  <h2 class="post-title">setting up vnc server on debian linux</h2>
+	<span class="post-date">Tue 18 May 2021</span>
+	<p>first of all, this is a debian 10.9 linux with gnome 3.38.5</p>
+<div class="highlight"><pre><span></span><code>root@tencent-hk:~# date +&quot;%F %T&quot;
+2021-05-18 13:02:21
+root@tencent-hk:~# cat /etc/debian_version 
+10.9
+</code></pre></div>
+
+<p>let's see the information</p>
+<div class="highlight"><pre><span></span><code>root@tencent-hk:/home/debian# apt install net-tools
+Reading package lists... Done
+Building dependency tree       
+Reading state information... Done
+The following NEW packages will be installed:
+  net-tools
+...
+</code></pre></div>
+
+<p>and then</p>
+<div class="highlight"><pre><span></span><code>root@tencent-hk:~# netstat -ntulp
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name    
+tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      439/sshd            
+tcp6       0      0 :::21                   :::*                    LISTEN      430/vsftpd          
+tcp6       0      0 :::22                   :::*                    LISTEN      439/sshd            
+udp        0      0 10.0.4.6:49990          0.0.0.0:*                           1723/firefox-esr    
+udp        0      0 0.0.0.0:44515           0.0.0.0:*                           388/avahi-daemon: r 
+udp        0      0 0.0.0.0:65535           0.0.0.0:*                           -                   
+udp        0      0 0.0.0.0:68              0.0.0.0:*                           492/dhclient        
+udp        0      0 0.0.0.0:5353            0.0.0.0:*                           388/avahi-daemon: r 
+udp6       0      0 :::65535                :::*                                -                   
+udp6       0      0 :::60605                :::*                                388/avahi-daemon: r 
+udp6       0      0 :::5353                 :::*                                388/avahi-daemon: r 
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>root@tencent-hk:~# apt search vncserver
+Sorting... Done
+Full Text Search... Done
+gem-plugin-vnc/stable 1:0.94-1 amd64
+  Graphics Environment for Multimedia - VNC support
+
+libvncclient1/stable 0.9.11+dfsg-1.3+deb10u4 amd64
+  API to write one&#39;s own VNC server - client library
+
+libvncclient1-dbg/stable 0.9.11+dfsg-1.3+deb10u4 amd64
+  debugging symbols for libvncclient
+
+libvncserver-config/stable 0.9.11+dfsg-1.3+deb10u4 amd64
+  API to write one&#39;s own VNC server - library utility
+
+libvncserver-dev/stable 0.9.11+dfsg-1.3+deb10u4 amd64
+  API to write one&#39;s own VNC server - development files
+
+libvncserver1/stable 0.9.11+dfsg-1.3+deb10u4 amd64
+  API to write one&#39;s own VNC server
+
+libvncserver1-dbg/stable 0.9.11+dfsg-1.3+deb10u4 amd64
+  debugging symbols for libvncserver
+
+tightvncserver/stable 1:1.3.9-9+deb10u1 amd64
+  virtual network computing server software
+
+xtightvncviewer/stable 1:1.3.9-9+deb10u1 amd64
+  virtual network computing client software for X
+</code></pre></div>
+
+<p>let's install <code>tightvncserver</code>, which is a wrapper to launch an X server for VNC.</p>
+<div class="highlight"><pre><span></span><code>root@tencent-hk:~# apt install tightvncserver
+Reading package lists... Done
+Building dependency tree       
+Reading state information... Done
+Suggested packages:
+  tightvnc-java
+The following NEW packages will be installed:
+  tightvncserver
+0 upgraded, 1 newly installed, 0 to remove and 0 not upgraded.
+Need to get 689 kB of archives.
+After this operation, 1,857 kB of additional disk space will be used.
+Get:1 http://deb.debian.org/debian buster/main amd64 tightvncserver amd64 1:1.3.9-9+deb10u1 [689 kB]
+Fetched 689 kB in 0s (18.8 MB/s)   
+Selecting previously unselected package tightvncserver.
+(Reading database ... 176202 files and directories currently installed.)
+Preparing to unpack .../tightvncserver_1%3a1.3.9-9+deb10u1_amd64.deb ...
+Unpacking tightvncserver (1:1.3.9-9+deb10u1) ...
+Setting up tightvncserver (1:1.3.9-9+deb10u1) ...
+update-alternatives: using /usr/bin/tightvncserver to provide /usr/bin/vncserver (vncserver) in auto mode
+update-alternatives: using /usr/bin/Xtightvnc to provide /usr/bin/Xvnc (Xvnc) in auto mode
+update-alternatives: using /usr/bin/tightvncpasswd to provide /usr/bin/vncpasswd (vncpasswd) in auto mode
+Processing triggers for man-db (2.8.5-2) ...
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>root@tencent-hk:~# vncserver
+
+You will require a password to access your desktops.
+
+Password: 
+Warning: password truncated to the length of 8.
+Verify:   
+Would you like to enter a view-only password (y/n)? y
+Password: 
+Warning: password truncated to the length of 8.
+Verify:   
+
+Warning: tencent-hk:1 is taken because of /tmp/.X11-unix/X1
+Remove this file if there is no X server tencent-hk:1
+xauth:  file /root/.Xauthority does not exist
+
+New &#39;X&#39; desktop is tencent-hk:2
+
+Creating default startup script /root/.vnc/xstartup
+Starting applications specified in /root/.vnc/xstartup
+Log file is /root/.vnc/tencent-hk:2.log
+</code></pre></div>
+
+<hr>
+<div class="highlight"><pre><span></span><code>root@tencent-hk:~# ls -al
+total 72
+drwx------  7 root root  4096 May 18 13:18 .
+drwxr-xr-x 19 root root  4096 Apr 10 13:29 ..
+-rw-------  1 root root  2628 May 17 10:33 .bash_history
+-rw-r--r--  1 root root   570 Jan 31  2010 .bashrc
+drwx------  2 root root  4096 Mar 15 17:12 .cache
+drwx------  3 root root  4096 May 18 13:18 .gnupg
+-rwx------  1 root root  1723 May  1 03:57 iptables.sh
+-rw-r--r--  1 root root   148 Aug 18  2015 .profile
+-rw-r--r--  1 root root    75 Mar 15 20:35 .selected_editor
+drwx------  2 root root  4096 Mar 15 20:23 .ssh
+drwxr-xr-x  2 root root  4096 May 16 15:13 .vim
+-rw-------  1 root root 10412 May 17 08:19 .viminfo
+-rw-r--r--  1 root root    31 Mar 15 17:21 .vimrc
+drwx------  2 root root  4096 May 18 13:18 .vnc
+-rw-------  1 root root   104 May 18 13:18 .Xauthority
+-rw-------  1 root root  1672 May 18 13:18 .xsession-errors
+
+root@tencent-hk:~# cd .vnc
+root@tencent-hk:~/.vnc# ls -al
+total 24
+drwx------ 2 root root 4096 May 18 13:18 .
+drwx------ 7 root root 4096 May 18 13:18 ..
+-rw------- 1 root root   16 May 18 13:18 passwd
+-rw-r--r-- 1 root root  555 May 18 13:18 tencent-hk:2.log
+-rw-r--r-- 1 root root    6 May 18 13:18 tencent-hk:2.pid
+-rwxr-xr-x 1 root root  225 May 18 13:18 xstartup
+root@tencent-hk:~/.vnc# cat xstartup 
+#!/bin/sh
+
+xrdb $HOME/.Xresources
+xsetroot -solid grey
+#x-terminal-emulator -geometry 80x24+10+10 -ls -title &quot;$VNCDESKTOP Desktop&quot; &amp;
+#x-window-manager &amp;
+# Fix to make GNOME work
+export XKL_XMODMAP_DISABLE=1
+/etc/X11/Xsession
+</code></pre></div>
+</div>
+		</div>
+	</body>
+</html>

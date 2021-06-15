@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+		<!-- Enable responsiveness on mobile devices-->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+		<title>blog</title>
+		<link rel="shortcut icon" href="/pelican/theme/favicon/favicon.ico" />
+		<link rel="stylesheet" href="/pelican/theme/css/poole.css" />
+		<link rel="stylesheet" href="/pelican/theme/css/hyde.css" />
+		<link rel="stylesheet" href="/pelican/theme/css/syntax.css" />
+		<link rel="stylesheet" href="/pelican/theme/css/style.css" />
+		<script type="text/javascript" src="/pelican/theme/css/all.js" />
+
+		</script>
+	</head>
+
+	<body class="theme-base-0g">
+	<div class="test-nav">
+		<a href="/pelican">Home</a>
+				<a href="/categories.html">Category</a>
+				<a href="/tags.html">Tag</a>
+	</div>
+		<div class="content container">
+<div class="post">
+  <h2 class="post-title">os module in python</h2>
+	<span class="post-date">Wed 20 June 2018</span>
+	<div class="highlight"><pre><span></span><code>root@localhost ~# python3
+Python 3.6.5 (default, Mar 29 2018, 18:20:46) 
+[GCC 8.0.1 20180317 (Red Hat 8.0.1-0.19)] on linux
+Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.
+&gt;&gt;&gt; import os
+</code></pre></div>
+
+<p>get current working directory:</p>
+<div class="highlight"><pre><span></span><code>&gt;&gt;&gt; os.getcwd()  
+&#39;/root&#39;
+</code></pre></div>
+
+<p>list all items inside this directory:</p>
+<div class="highlight"><pre><span></span><code>&gt;&gt;&gt; os.listdir() #contents of folder os.getcwd()
+[&#39;.ssh&#39;, &#39;.bash_logout&#39;, &#39;.cache&#39;, &#39;.bash_history&#39;, &#39;.config&#39;, &#39;.android&#39;, &#39;.python_history&#39;, &#39;anaconda-ks.cfg&#39;, &#39;.viminfo&#39;, &#39;.tcshrc&#39;, &#39;.bashrc&#39;, &#39;.local&#39;, &#39;.cshrc&#39;, &#39;.vimrc&#39;, &#39;.bash_profile&#39;, &#39;.esd_auth&#39;, &#39;.oracle_jre_usage&#39;, &#39;.gnupg&#39;, &#39;.mozilla&#39;]
+&gt;&gt;&gt; os.listdir(&#39;/home&#39;) #contents of folder /home
+[&#39;kali&#39;]
+</code></pre></div>
+
+<p>cd /home directory:</p>
+<div class="highlight"><pre><span></span><code>&gt;&gt;&gt; os.chdir(&#39;/home&#39;) #change current work directory to /home
+</code></pre></div>
+
+<p>create multiple folders:</p>
+<div class="highlight"><pre><span></span><code>&gt;&gt;&gt; os.makedirs(&#39;1/2&#39;) #can make sub folder at once.
+&gt;&gt;&gt; os.mkdir(&#39;3/4&#39;)
+Traceback (most recent call last):
+  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+FileNotFoundError: [Errno 2] No such file or directory: &#39;3/4&#39;
+&gt;&gt;&gt; os.mkdir(&#39;3&#39;) #can only make one folder at once.
+&gt;&gt;&gt; os.listdir()
+[&#39;1&#39;, &#39;3&#39;, &#39;kali&#39;]
+</code></pre></div>
+
+<p>delete folder which name is 3:</p>
+<div class="highlight"><pre><span></span><code>&gt;&gt;&gt; os.rmdir(&#39;3&#39;) 
+</code></pre></div>
+
+<p>rename folder 1 with a:</p>
+<div class="highlight"><pre><span></span><code>&gt;&gt;&gt; os.rename(&#39;1&#39;,&#39;a&#39;)
+</code></pre></div>
+
+<p>delete files:</p>
+<div class="highlight"><pre><span></span><code>&gt;&gt;&gt; os.remove(&quot;filename&quot;)
+</code></pre></div>
+
+<p>global environment variables:</p>
+<div class="highlight"><pre><span></span><code>&gt;&gt;&gt; os.environ.get(&#39;HOME&#39;)
+&#39;/root&#39;
+&gt;&gt;&gt; for arg in os.environ:  # list all the environment variables
+...     print(arg)
+... 
+LS_COLORS
+XDG_MENU_PREFIX
+MODULES_RUN_QUARANTINE
+LANG
+GDM_LANG
+HISTCONTROL
+DISPLAY
+HOSTNAME
+OLDPWD
+COLORTERM
+USERNAME
+XDG_VTNR
+SSH_AUTH_SOCK
+XDG_SESSION_ID
+MODULES_CMD
+USER
+ENV
+DESKTOP_SESSION
+WAYLAND_DISPLAY
+GNOME_TERMINAL_SCREEN
+PWD
+HOME
+XDG_SESSION_TYPE
+BASH_ENV
+XDG_DATA_DIRS
+XDG_SESSION_DESKTOP
+GJS_DEBUG_OUTPUT
+ALL_PROXY
+LOADEDMODULES
+no_proxy
+NO_PROXY
+MAIL
+TERM
+SHELL
+VTE_VERSION
+all_proxy
+QT_IM_MODULE
+XMODIFIERS
+XDG_CURRENT_DESKTOP
+GNOME_TERMINAL_SERVICE
+SHLVL
+XDG_SEAT
+MODULEPATH
+GDMSESSION
+GNOME_DESKTOP_SESSION_ID
+LOGNAME
+DBUS_SESSION_BUS_ADDRESS
+XDG_RUNTIME_DIR
+MODULEPATH_modshare
+PATH
+MODULESHOME
+HISTSIZE
+GJS_DEBUG_TOPICS
+SESSION_MANAGER
+LESSOPEN
+BASH_FUNC_module%%
+BASH_FUNC_switchml%%
+BASH_FUNC_scl%%
+BASH_FUNC__moduleraw%%
+_
+</code></pre></div>
+
+<p>directory handle</p>
+<div class="highlight"><pre><span></span><code>&gt;&gt;&gt; p = os.environ.get(&#39;HOME&#39;)
+&gt;&gt;&gt; p
+&#39;/root&#39;
+&gt;&gt;&gt; path = os.path.join(p,&#39;test.txt&#39;)
+&gt;&gt;&gt; path
+&#39;/root/test.txt&#39;
+&gt;&gt;&gt; 
+</code></pre></div>
+</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+		<!-- Enable responsiveness on mobile devices-->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+		<title>blog</title>
+		<link rel="shortcut icon" href="/pelican/theme/favicon/favicon.ico" />
+		<link rel="stylesheet" href="/pelican/theme/css/poole.css" />
+		<link rel="stylesheet" href="/pelican/theme/css/hyde.css" />
+		<link rel="stylesheet" href="/pelican/theme/css/syntax.css" />
+		<link rel="stylesheet" href="/pelican/theme/css/style.css" />
+		<script type="text/javascript" src="/pelican/theme/css/all.js" />
+
+		</script>
+	</head>
+
+	<body class="theme-base-0g">
+	<div class="test-nav">
+		<a href="/pelican">Home</a>
+				<a href="/categories.html">Category</a>
+				<a href="/tags.html">Tag</a>
+	</div>
+		<div class="content container">
+<div class="post">
+  <h2 class="post-title">what is kmsg in linux</h2>
+	<span class="post-date">Fri 20 November 2020</span>
+	<p>let's look at <code>/dev/kmsg</code></p>
+<div class="highlight"><pre><span></span><code>[root@localhost ~]# ls -lhZ /dev/kmsg
+crw-r--r--. 1 root root system_u:object_r:kmsg_device_t:s0 1, 11 Nov  3 19:58 /dev/kmsg
+</code></pre></div>
+
+<p>and then look at <code>/proc/kmsg</code></p>
+<div class="highlight"><pre><span></span><code>[root@localhost ~]# ls -lhZ /proc/kmsg
+-r--------. 1 root root system_u:object_r:proc_kmsg_t:s0 0 Nov  3 19:58 /proc/kmsg
+</code></pre></div>
+</div>
+		</div>
+	</body>
+</html>

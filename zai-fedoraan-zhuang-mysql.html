@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+		<!-- Enable responsiveness on mobile devices-->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+		<title>blog</title>
+		<link rel="shortcut icon" href="/pelican/theme/favicon/favicon.ico" />
+		<link rel="stylesheet" href="/pelican/theme/css/poole.css" />
+		<link rel="stylesheet" href="/pelican/theme/css/hyde.css" />
+		<link rel="stylesheet" href="/pelican/theme/css/syntax.css" />
+		<link rel="stylesheet" href="/pelican/theme/css/style.css" />
+		<script type="text/javascript" src="/pelican/theme/css/all.js" />
+
+		</script>
+	</head>
+
+	<body class="theme-base-0g">
+	<div class="test-nav">
+		<a href="/pelican">Home</a>
+				<a href="/categories.html">Category</a>
+				<a href="/tags.html">Tag</a>
+	</div>
+		<div class="content container">
+<div class="post">
+  <h2 class="post-title">在Fedora安装Mysql</h2>
+	<span class="post-date">Sun 16 October 2016</span>
+	<p>first let's download mysql repo rpm package from here:<a href="https://dev.mysql.com/downloads/repo/yum/" target="blank">mysql</a></p>
+<div class="highlight"><pre><span></span><code>[root@localhost ~]# dnf install ./mysql57-community-release-fc27-10.noarch.rpm -y
+[root@localhost ~]# dnf update -y &amp;&amp; dnf install mysql-server -y
+</code></pre></div>
+
+<p>restart mysqld service, then change password for user root</p>
+<div class="highlight"><pre><span></span><code>[root@localhost ~]# systemctl restart mysqld
+[root@localhost ~]# grep &#39;temporary password&#39; /var/log/mysqld.log
+[root@localhost ~]# mysql -uroot -p
+mysql &gt; ALTER USER &#39;root&#39;@&#39;localhost&#39; IDENTIFIED BY &#39;MyNewPass4!&#39;;
+</code></pre></div>
+
+<blockquote>
+<h4>Note</h4>
+<p><code>validate_password</code> is installed by default. The default password policy implemented by validate_password requires that passwords contain at least one upper case letter, one lower case letter, one digit, one special character, and that the total password length is at least 8 characters.</p>
+</blockquote>
+<p>If version of mysql is 5.6 or below,changing root password should use the following statements:</p>
+<ol>
+<li>mysql -u root -p</li>
+<li>use mysql;</li>
+<li>update user set password = password(​"my_own_passwd​") where user = 'root';</li>
+<li>flush privilege</li>
+</ol>
+<blockquote>
+<p>Note ​ : ​
+password("my_own_passwd") ​ statement contains double quotes,if you use simple quote,that will go really bad.</p>
+</blockquote>
+</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+		<!-- Enable responsiveness on mobile devices-->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+		<title>blog</title>
+		<link rel="shortcut icon" href="/pelican/theme/favicon/favicon.ico" />
+		<link rel="stylesheet" href="/pelican/theme/css/poole.css" />
+		<link rel="stylesheet" href="/pelican/theme/css/hyde.css" />
+		<link rel="stylesheet" href="/pelican/theme/css/syntax.css" />
+		<link rel="stylesheet" href="/pelican/theme/css/style.css" />
+		<script type="text/javascript" src="/pelican/theme/css/all.js" />
+
+		</script>
+	</head>
+
+	<body class="theme-base-0g">
+	<div class="test-nav">
+		<a href="/pelican">Home</a>
+				<a href="/categories.html">Category</a>
+				<a href="/tags.html">Tag</a>
+	</div>
+		<div class="content container">
+<div class="post">
+  <h2 class="post-title">bash script</h2>
+	<span class="post-date">Sun 01 November 2020</span>
+	<p>search file for words contain 'A' or 'B', no matter how the sequence is</p>
+<div class="highlight"><pre><span></span><code>[root@localhost ~]# grep -E &quot;A|B&quot; file
+</code></pre></div>
+
+<blockquote>
+<h4>Note</h4>
+<p><code>grep -e</code> equals to <code>egrep</code>, but when using format <em>"A|B"</em>, only <code>grep -E</code> equals to <code>egrep</code>.</p>
+</blockquote>
+<p>thus the following works too</p>
+<div class="highlight"><pre><span></span><code>[root@localhost ~]# egrep &quot;A|B&quot; file
+</code></pre></div>
+
+<hr>
+<p>search file for words 'A' or 'B', not words contain 'A' or 'B'</p>
+<div class="highlight"><pre><span></span><code>[root@localhost ~]# egrep -w &quot;A|B&quot; file
+</code></pre></div>
+
+<p>while u still can use the following, which looks not that elegant</p>
+<div class="highlight"><pre><span></span><code>[root@localhost ~]# grep -w &quot;A\|B&quot; file
+</code></pre></div>
+
+<hr>
+<h4>find</h4>
+<table>
+<thead>
+<tr>
+<th>type args</th>
+<th>desc</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>b</td>
+<td>block (buffered) special</td>
+</tr>
+<tr>
+<td>c</td>
+<td>character (unbuffered) special</td>
+</tr>
+<tr>
+<td>d</td>
+<td>directory</td>
+</tr>
+<tr>
+<td>p</td>
+<td>named pipe (FIFO)</td>
+</tr>
+<tr>
+<td>f</td>
+<td>regular file</td>
+</tr>
+<tr>
+<td>l</td>
+<td>symbolic link; this is never true if the -L option or the -follow option is in effect, unless the  sym-bolic link is broken.  If you want to search for symbolic links when -L is in effect, use -xtype.</td>
+</tr>
+<tr>
+<td>s</td>
+<td>socket</td>
+</tr>
+<tr>
+<td>D</td>
+<td>door (Solaris)</td>
+</tr>
+</tbody>
+</table>
+<p>linux regular file, files that begin with a dash <code>-</code>:</p>
+<div class="highlight"><pre><span></span><code>[root@localhost ~]# ls -lh
+total 4.0K
+-rw-------. 1 root root 1.5K Dec  1 07:00 anaconda-ks.cfg
+</code></pre></div>
+
+<hr>
+<div class="highlight"><pre><span></span><code>[root@localhost ~]# find . -maxdepth 1 -type f -exec ls {} \;
+</code></pre></div>
+
+<blockquote>
+<h4>Note</h4>
+<p><code>-maxdepth</code> only used for GNU linux.</p>
+</blockquote>
+<div class="highlight"><pre><span></span><code>[root@localhost ~]# find /etc -maxpdepth 1 -type f | wc -l
+</code></pre></div>
+
+<p>To search for more than one type at once, you can supply the combined list of type letters separated by a comma <code>,</code> (GNU extension).</p>
+<div class="highlight"><pre><span></span><code>[root@localhost ~]# find . -maxdepth 1 -type f,d
+</code></pre></div>
+
+<p>File is owned by user uname (numeric user ID allowed).</p>
+<div class="highlight"><pre><span></span><code>[root@localhost ~]# find . -user root
+</code></pre></div>
+
+<p>File's numeric user ID is n.</p>
+<div class="highlight"><pre><span></span><code>[root@localhost ~]# find . -uid 0
+</code></pre></div>
+
+<p>File was last accessed n days after its status was last changed.</p>
+<div class="highlight"><pre><span></span><code>[root@localhost ~]# find . -maxdepth 1  -used 1
+</code></pre></div>
+
+<hr>
+<blockquote>
+<h4>Linux File Status</h4>
+<p>using <code>stat</code> can see the detial.</p>
+</blockquote>
+<div class="highlight"><pre><span></span><code>[root@localhost ~]# stat publish.sh
+  File: publish.sh
+  Size: 203             Blocks: 8          IO Block: 4096   regular file
+Device: fd01h/64769d    Inode: 659333      Links: 1
+Access: (0744/-rwxr--r--)  Uid: (    0/    root)   Gid: (    0/    root)
+Context: unconfined_u:object_r:default_t:s0
+Access: 2021-03-08 17:41:49.887026736 +0900
+Modify: 2020-10-04 02:35:10.000000000 +0900
+Change: 2020-12-01 08:42:06.945165930 +0900
+Birth: 2020-12-01 08:42:06.945165930 +0900
+</code></pre></div>
+
+<p>File's status was last changed n*24 hours ago, if n &gt; 0, then n days ago; if n &lt; 0, then in n days. </p>
+<div class="highlight"><pre><span></span><code>[root@localhost ~]# find . -ctime -1
+</code></pre></div>
+
+<p>File's status was last changed n minutes ago.</p>
+<div class="highlight"><pre><span></span><code>[root@localhost ~]# find . -cmin -30
+</code></pre></div>
+
+<p>File's data was last modified n minutes ago.</p>
+<div class="highlight"><pre><span></span><code>[root@localhost ~]# find . -mmin -60
+</code></pre></div>
+
+<p>File's data was last modified n*24 hours ago. </p>
+<div class="highlight"><pre><span></span><code>[root@localhost ~]# find . -mtime -1
+</code></pre></div>
+
+<hr>
+<p>very useful things for linux history command</p>
+<div class="highlight"><pre><span></span><code># vim /etc/profile
+...
+HISTSIZE=2000
+HISTTIMEFORMAT=&#39;%F %T &#39;
+...
+~
+:x
+</code></pre></div>
+
+<hr>
+</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+		<!-- Enable responsiveness on mobile devices-->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+		<title>blog</title>
+		<link rel="shortcut icon" href="/pelican/theme/favicon/favicon.ico" />
+		<link rel="stylesheet" href="/pelican/theme/css/poole.css" />
+		<link rel="stylesheet" href="/pelican/theme/css/hyde.css" />
+		<link rel="stylesheet" href="/pelican/theme/css/syntax.css" />
+		<link rel="stylesheet" href="/pelican/theme/css/style.css" />
+		<script type="text/javascript" src="/pelican/theme/css/all.js" />
+
+		</script>
+	</head>
+
+	<body class="theme-base-0g">
+	<div class="test-nav">
+		<a href="/pelican">Home</a>
+				<a href="/categories.html">Category</a>
+				<a href="/tags.html">Tag</a>
+	</div>
+		<div class="content container">
+<div class="post">
+  <h2 class="post-title">Java Environment Variables</h2>
+	<span class="post-date">Mon 05 October 2020</span>
+	<p>java enviroment variables settings for Windows systems</p>
+<table>
+<thead>
+<tr>
+<th>Keyword</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CLASSPATH</td>
+<td>.;%JAVA_HOME%\lib\;%JAVA_HOME%\jre\lib</td>
+</tr>
+<tr>
+<td>JAVA_HOME</td>
+<td>C:\Program Files\Java\jre1.8.0_241</td>
+</tr>
+<tr>
+<td>JDK_HOME</td>
+<td>%JAVA_HOME%</td>
+</tr>
+<tr>
+<td>JRE_HOME</td>
+<td>%JAVA_HOME%\jre</td>
+</tr>
+</tbody>
+</table>
+<p>java enviroment variables settings for Linux systems</p>
+<div class="highlight"><pre><span></span><code>[root@localhost ~]# tail -n 3 /etc/profile
+JAVA_HOME=/opt/java/jre1.8.0_241/
+export JAVA_HOME
+PATH=$PATH:$JAVA_HOME/bin
+</code></pre></div>
+
+<p>check current activated java's varsion</p>
+<div class="highlight"><pre><span></span><code>[root@localhost ~]# java -version
+java version &quot;1.8.0_241&quot;
+Java(TM) SE Runtime Environment (build 1.8.0_241-b07)
+Java HotSpot(TM) 64-Bit Server VM (build 25.241-b07, mixed mode)
+</code></pre></div>
+
+<p>if multiple java versions has installed, using below method to select one of them</p>
+<div class="highlight"><pre><span></span><code>[root@localhost ~]# update-alternatives --install /usr/bin/javaws javaws /opt/java/jre1.8.0_241/bin/javaws 2
+[root@localhost ~]# update-alternatives --config java
+
+There are 2 programs which provide &#39;java&#39;.
+
+  Selection    Command
+-----------------------------------------------
+*  1           java-1.8.0-openjdk.x86_64 (/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.242.b08-0.fc31.x86_64/jre/bin/java)
+ + 2           /opt/java/jre1.8.0_241/bin/java
+
+Enter to keep the current selection[+], or type selection number: 2
+</code></pre></div>
+</div>
+		</div>
+	</body>
+</html>

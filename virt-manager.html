@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+		<!-- Enable responsiveness on mobile devices-->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+		<title>blog</title>
+		<link rel="shortcut icon" href="/pelican/theme/favicon/favicon.ico" />
+		<link rel="stylesheet" href="/pelican/theme/css/poole.css" />
+		<link rel="stylesheet" href="/pelican/theme/css/hyde.css" />
+		<link rel="stylesheet" href="/pelican/theme/css/syntax.css" />
+		<link rel="stylesheet" href="/pelican/theme/css/style.css" />
+		<script type="text/javascript" src="/pelican/theme/css/all.js" />
+
+		</script>
+	</head>
+
+	<body class="theme-base-0g">
+	<div class="test-nav">
+		<a href="/pelican">Home</a>
+				<a href="/categories.html">Category</a>
+				<a href="/tags.html">Tag</a>
+	</div>
+		<div class="content container">
+<div class="post">
+  <h2 class="post-title">virt-manager</h2>
+	<span class="post-date">Wed 02 December 2020</span>
+	<p><a href="https://virt-manager.org/" target="blank">virt-manager</a> is a desktop user interface for managing virtual machines through libvirt. It primarily targets KVM VMs, but also manages Xen and LXC (linux containers). It presents a summary view of running domains, their live performance &amp; resource utilization statistics. Wizards enable the creation of new domains, and configuration &amp; adjustment of a domain’s resource allocation &amp; virtual hardware. An embedded VNC and SPICE client viewer presents a full graphical console to the guest domain.</p>
+<hr>
+<p>let's install <code>virt-manager</code></p>
+<div class="highlight"><pre><span></span><code>[root@localhost ~]# dnf install virt-manager
+Last metadata expiration check: 2:42:57 ago on Sun 29 Nov 2020 05:56:50 AM JST.
+Dependencies resolved.
+==============================================================================================================================================================================================
+ Package                                              Architecture                            Version                                          Repository                                Size
+==============================================================================================================================================================================================
+Installing:
+ virt-manager                                         noarch                                  3.2.0-1.fc33                                     updates                                  540 k
+Installing dependencies:
+ python3-libvirt                                      x86_64                                  6.6.0-1.fc33                                     fedora                                   305 k
+ virt-manager-common                                  noarch                                  3.2.0-1.fc33                                     updates                                  990 k
+
+Transaction Summary
+==============================================================================================================================================================================================
+Install  3 Packages
+
+Total download size: 1.8 M
+Installed size: 9.2 M
+Is this ok [y/N]: y
+...
+</code></pre></div>
+
+<hr>
+<h4>virt-manager’s supporting tools</h4>
+<ul>
+<li><code>virt-install</code> is a command line tool which provides an easy way to provision operating systems into virtual machines.</li>
+<li><code>virt-viewer</code> is a lightweight UI interface for interacting with the graphical display of virtualized guest OS. It can display VNC or SPICE, and uses libvirt to lookup the graphical connection details.</li>
+<li><code>virt-clone</code> is a command line tool for cloning existing inactive guests. It copies the disk images, and defines a config with new name, UUID and MAC address pointing to the copied disks.</li>
+<li><code>virt-xml</code> is a command line tool for easily editing libvirt domain XML using virt-install’s command line options.</li>
+<li><code>virt-bootstrap</code> is a command tool providing an easy way to setup the root file system for libvirt-based containers.</li>
+</ul>
+<hr>
+</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+		<!-- Enable responsiveness on mobile devices-->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+		<title>blog</title>
+		<link rel="shortcut icon" href="/pelican/theme/favicon/favicon.ico" />
+		<link rel="stylesheet" href="/pelican/theme/css/poole.css" />
+		<link rel="stylesheet" href="/pelican/theme/css/hyde.css" />
+		<link rel="stylesheet" href="/pelican/theme/css/syntax.css" />
+		<link rel="stylesheet" href="/pelican/theme/css/style.css" />
+		<script type="text/javascript" src="/pelican/theme/css/all.js" />
+
+		</script>
+	</head>
+
+	<body class="theme-base-0g">
+	<div class="test-nav">
+		<a href="/pelican">Home</a>
+				<a href="/categories.html">Category</a>
+				<a href="/tags.html">Tag</a>
+	</div>
+		<div class="content container">
+<div class="post">
+  <h2 class="post-title">ikuai8</h2>
+	<span class="post-date">Mon 21 December 2020</span>
+	<p>1.点击这里访问官网下载最新的固件: <a href="https://www.ikuai8.com/component/download" target="blank">ikuai8</a></p>
+<p><img alt="img" src="images/ikuai8-download.png"></p>
+<p>选择 <code>ISO 64位</code>. 点击下载。</p>
+<div class="highlight"><pre><span></span><code>[root@localhost iso]# date +%F-%H:%M
+2020-12-21-19:09
+[root@localhost iso]# ls
+iKuai8_x64_3.4.7_Build202012140950.iso
+iKuai8_x64_3.4.7_Build202012140950.iso.md5sum
+[root@localhost iso]# cat iKuai8_x64_3.4.7_Build202012140950.iso.md5sum 
+5af25129acdf99dc7d792134f36849ab  iKuai8_x64_3.4.7_Build202012140950.iso
+[root@localhost iso]# md5sum -c iKuai8_x64_3.4.7_Build202012140950.iso.md5sum 
+iKuai8_x64_3.4.7_Build202012140950.iso: OK
+</code></pre></div>
+
+<blockquote>
+<h4>Note</h4>
+<p>3.4.7免费版系统</p>
+<ul>
+<li>版本号：iKuai8_3.4.7_Build202012140950</li>
+<li>更新时间：2020-12-14 13:17:02</li>
+<li>软件大小：44M</li>
+<li>默认管理地址：192.168.1.1</li>
+<li>默认用户名/密码：admin/admin</li>
+</ul>
+</blockquote>
+<hr>
+<p>2.制作usb安装介质</p>
+<ul>
+<li>linux</li>
+</ul>
+<div class="highlight"><pre><span></span><code>[root@localhost ~]# dd if=iKuai8_x64_3.4.7_Build202012140950.iso of=/dev/sda bs=1M status=progress
+</code></pre></div>
+
+<ul>
+<li>windows</li>
+</ul>
+<hr>
+<p>3.安装爱快系统</p>
+<p>将usb安装介质插入软路由小主机上，然后开机进入basic input/output system[基本输入输出系统]，选取每个字的首字母组合就变成bios，设置为u盘启动进入安装界面。</p>
+<video class="blog-video" controls>
+  <source src="images/1.安装爱快系统.mp4" type="video/mp4">
+</video>
+</div>
+		</div>
+	</body>
+</html>

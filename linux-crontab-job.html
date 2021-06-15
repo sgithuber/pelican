@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+		<!-- Enable responsiveness on mobile devices-->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+		<title>blog</title>
+		<link rel="shortcut icon" href="/pelican/theme/favicon/favicon.ico" />
+		<link rel="stylesheet" href="/pelican/theme/css/poole.css" />
+		<link rel="stylesheet" href="/pelican/theme/css/hyde.css" />
+		<link rel="stylesheet" href="/pelican/theme/css/syntax.css" />
+		<link rel="stylesheet" href="/pelican/theme/css/style.css" />
+		<script type="text/javascript" src="/pelican/theme/css/all.js" />
+
+		</script>
+	</head>
+
+	<body class="theme-base-0g">
+	<div class="test-nav">
+		<a href="/pelican">Home</a>
+				<a href="/categories.html">Category</a>
+				<a href="/tags.html">Tag</a>
+	</div>
+		<div class="content container">
+<div class="post">
+  <h2 class="post-title">linux crontab job</h2>
+	<span class="post-date">Fri 07 May 2021</span>
+	<p>as usual, all new installed linux system will show result like below</p>
+<div class="highlight"><pre><span></span><code># ┌───────────── minute (0 - 59)
+# │ ┌───────────── hour (0 - 23)
+# │ │ ┌───────────── day of the month (1 - 31)
+# │ │ │ ┌───────────── month (1 - 12)
+# │ │ │ │ ┌───────────── day of the week (0 - 6) (Sunday to Saturday;
+# │ │ │ │ │                          7 is also Sunday on some systems)
+# │ │ │ │ │
+# │ │ │ │ │
+# * * * * * &lt;command to execute&gt;
+</code></pre></div>
+
+<hr>
+<p>for better understand and remember, below are some examples:</p>
+<ul>
+<li>it's someone's birthday, this script will only run once at 00:00 am 1th November.</li>
+</ul>
+<div class="highlight"><pre><span></span><code>0 0 1 11 * echo &quot;happy birthday to him.&quot;
+</code></pre></div>
+
+<ul>
+<li>say "merry christmas" at 00:00 am of the day 24 and 25 in Decembar.</li>
+</ul>
+<div class="highlight"><pre><span></span><code>0 0 24,25 12 * echo &quot;merry christmas&quot;
+</code></pre></div>
+
+<ul>
+<li>
+<p><code>/</code> means every stuff.</p>
+</li>
+<li>
+<p><code>-</code> means from ~ to ~.</p>
+</li>
+</ul>
+</div>
+		</div>
+	</body>
+</html>
