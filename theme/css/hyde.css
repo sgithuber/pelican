@@ -1,0 +1,117 @@
+html {
+  font-family: "PT Sans", Helvetica, Arial, sans-serif;
+}
+@media (max-width: 40em){
+  .posts{
+    margin-top: 2.5rem;
+  }
+	.post{
+		margin-top: 2.5rem;
+	}
+  .test-nav {
+    background-color: #000;
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    width: 100%;
+  }
+	.test-nav a { 
+    float: left;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+  }
+	.blog-video{
+		width: 100%;
+		height: 240px;
+	}
+}
+
+@media (min-width: 40em) and (max-width: 64em) {
+  html {
+    font-size: 16px;
+  }
+	.posts{
+		margin-top: 4rem;
+	}
+	.post{
+		margin-top: 4rem;
+	}
+	.test-nav {
+  	background-color: #000;
+  	overflow: hidden;
+		position: fixed;
+  	top: 0;
+  	width: 100%;
+	}
+	.test-nav a {
+  	float: left;
+  	color: #f2f2f2;
+  	text-align: center;
+  	padding: 14px 16px;
+  	text-decoration: none;
+  	font-size: 20px;
+	}
+	.test-nav a:hover {
+  	background-color: #ddd;
+  	color: black;
+	}
+	.test-nav a.active {
+  	background-color: #04AA6D;
+  	color: white;
+	}
+	.container{
+		max-width: 100%;
+		margin-left: 1rem;
+		margin-right: 1rem;
+	}
+  .blog-video{
+    width: 100%;
+    height: 320px;
+  }
+}
+
+@media (min-width: 64em) {
+  .posts{
+    margin-top: 4.2rem;
+  }
+	.post{
+		margin-top: 4.2rem;
+	}
+	.test-nav {
+    background-color: #000;
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    width: 100%;
+  }
+  .test-nav a { 
+    float: left;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 20px;
+  }
+	.test-nav a:hover {
+    background-color: #ddd;
+    color: black;
+  }
+  .test-nav a.active {
+    background-color: #04AA6D;
+    color: white;
+  }
+  .blog-video{
+    width: 100%;
+    height: 30rem;
+  }
+	
+}
+
+.content {
+  padding-top: 4rem;
+ 	padding-bottom: 4rem;
+}
+
